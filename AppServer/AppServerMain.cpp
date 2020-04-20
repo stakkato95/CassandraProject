@@ -8,6 +8,8 @@
 
 #include "databaseapp.grpc.pb.h"
 
+#include "CassandraExample.h"
+
 using namespace std;
 
 using grpc::Server;
@@ -49,6 +51,7 @@ void RunServer() {
 }
 
 int main(int argc, char **argv) {
+    helloCassandra();
     RunServer();
     return 0;
 }
