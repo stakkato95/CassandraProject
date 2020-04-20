@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package databaseapp;
+
+// The Application service definition.
+service ApplicationServer {
+    // Get simple response
+    rpc getResponse (ServerRequest) returns (ServerResponse) {}
+}
+
+// The request message
+message ServerRequest {
+    string topic = 1;
+}
+
+// The response message
+message ServerResponse {
+    string content = 1;
+}
