@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <typeindex>
 
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
@@ -9,6 +10,7 @@
 #include "databaseapp.grpc.pb.h"
 
 #include "CassandraExample.h"
+#include "CassDriverWrapper.h"
 
 using namespace std;
 
@@ -51,7 +53,54 @@ void RunServer() {
 }
 
 int main(int argc, char **argv) {
-    helloCassandra();
+    CassDriverWrapper wrapper("127.0.0.1", "demo");
+    wrapper.connect();
+
+    //test insert
+//    ContentValues attrs{
+//            {"lastname",  "Jones"},
+//            {"age",       35},
+//            {"city",      "Austin"},
+//            {"email",     "bob@example.com"},
+//            {"firstname", "Bob"}
+//    };
+//    wrapper.insert("users", attrs);
+
+    //test delete
+    ContentValues where{{"lastname", "Jones"}};
+    wrapper.del("users", where);
+
+    //test select
+    //ContentValues where{{"lastname", "Jones"}};
+    ContentMappings attrsRow{
+            {"lastname",  type_index(typeid(string))},
+            {"age",       type_index(typeid(int))},
+            {"city",      type_index(typeid(string))},
+            {"email",     type_index(typeid(string))},
+            {"firstname", type_index(typeid(string))}
+    };
+    if (auto result = wrapper.select("users", { }, attrsRow); holds_alternative<ResultCollection>(result)) {
+        ResultCollection collection = get<ResultCollection>(result);
+
+        for (const ContentValues &content : collection) {
+            for (const pair<string, object> &pair : content) {
+                if (holds_alternative<string>(pair.second)) {
+                    cout << get<string>(pair.second);
+                } else if (holds_alternative<int>(pair.second)) {
+                    cout << get<int>(pair.second);
+                } else if (holds_alternative<float>(pair.second)) {
+                    cout << get<float>(pair.second);
+                }
+                cout << " ";
+            }
+            cout << endl;
+        }
+
+    }
+
+    wrapper.disconnect();
+
     RunServer();
+
     return 0;
 }

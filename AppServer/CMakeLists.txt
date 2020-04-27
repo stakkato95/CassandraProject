@@ -137,7 +137,7 @@ add_executable(AppServer
         ${hw_proto_srcs}
         ${hw_grpc_srcs}
         ${LIBCASSANDRA_INCLUDE_DIR}/cassandra.h
-        CassandraExample.h)
+        CassandraExample.h CassDriverWrapper.h CassDriverWrapper.cpp)
 target_link_libraries(AppServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}
