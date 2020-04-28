@@ -6,7 +6,7 @@
 #define APPSERVER_SENSORADAPTER_H
 
 #include "Adapter.h"
-#include "../Model/Sensor.h"
+#include "../../Model/Sensor.h"
 
 class SensorAdapter : public Adapter<Sensor> {
 public:

@@ -4,9 +4,9 @@
 
 #include "CassDriverAdapter.h"
 
-#include "../Model/User.h"
-#include "../Model/Sensor.h"
-#include "../Model/Company.h"
+#include "../../Model/User.h"
+#include "../../Model/Sensor.h"
+#include "../../Model/Company.h"
 
 #include "../Adapter/UserAdapter.h"
 #include "../Adapter/SensorAdapter.h"

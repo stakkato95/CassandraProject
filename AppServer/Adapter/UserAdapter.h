@@ -6,7 +6,7 @@
 #define APPSERVER_USERADAPTER_H
 
 #include "Adapter.h"
-#include "../Model/User.h"
+#include "../../Model/User.h"
 
 #include <string>
 

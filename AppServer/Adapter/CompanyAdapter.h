@@ -6,7 +6,7 @@
 #define APPSERVER_COMPANYADAPTER_H
 
 #include "Adapter.h"
-#include "../Model/Company.h"
+#include "../../Model/Company.h"
 
 #include <string>
 

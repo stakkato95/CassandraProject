@@ -16,9 +16,9 @@
 #include "Adapter/UserAdapter.h"
 #include "Adapter/CompanyAdapter.h"
 
-#include "Model/Sensor.h"
-#include "Model/User.h"
-#include "Model/Company.h"
+#include "../Model/Sensor.h"
+#include "../Model/User.h"
+#include "../Model/Company.h"
 
 using namespace std;
 
