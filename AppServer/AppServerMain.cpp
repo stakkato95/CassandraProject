@@ -111,7 +111,7 @@ void testDriverWrapper() {
     wrapper.disconnect();
 }
 
-int main(int argc, char **argv) {
+void testDriverAdapter() {
     CassDriverAdapter driver(CassDriverWrapper("127.0.0.1", "demo"));
     //driver.registerAdapter<Sensor, SensorAdapter>("sensor");
     driver.registerAdapter<User, UserAdapter>("users");
@@ -123,6 +123,10 @@ int main(int argc, char **argv) {
             cout << user.firstname << " " << user.lastname << endl;
         }
     }
+}
+
+int main(int argc, char **argv) {
+    testDriverAdapter();
 
     RunServer();
 
