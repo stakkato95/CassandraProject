@@ -137,7 +137,7 @@ add_executable(AppServer
         ${hw_proto_srcs}
         ${hw_grpc_srcs}
         ${LIBCASSANDRA_INCLUDE_DIR}/cassandra.h
-        CassDriverWrapper.h CassDriverWrapper.cpp)
+        Driver/CassDriverWrapper.h Driver/CassDriverWrapper.cpp Driver/CassDriverAdapter.cpp Driver/CassDriverAdapter.h Adapter/Adapter.cpp Adapter/Adapter.h Model/Sensor.h Adapter/SensorAdapter.cpp Adapter/SensorAdapter.h Adapter/UserAdapter.cpp Adapter/UserAdapter.h Model/User.h)
 target_link_libraries(AppServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}

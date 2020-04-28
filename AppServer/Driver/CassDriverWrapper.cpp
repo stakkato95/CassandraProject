@@ -278,7 +278,6 @@ void CassDriverWrapper::bindParams(CassStatement *statement, const ContentValues
 ContentValues CassDriverWrapper::getRow(const CassRow *row, const ContentMappings &attrs) {
     ContentValues resultRow;
 
-
     for (const auto&[name, type] : attrs) {
         if (type == typeid(string)) {
             const char *strVal = nullptr;

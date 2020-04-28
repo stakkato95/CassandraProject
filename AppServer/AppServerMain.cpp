@@ -9,7 +9,12 @@
 
 #include "databaseapp.grpc.pb.h"
 
-#include "CassDriverWrapper.h"
+#include "Driver/CassDriverWrapper.h"
+#include "Driver/CassDriverAdapter.h"
+#include "Adapter/SensorAdapter.h"
+#include "Adapter/UserAdapter.h"
+#include "Model/Sensor.h"
+#include "Model/User.h"
 
 using namespace std;
 
@@ -51,7 +56,7 @@ void RunServer() {
     server->Wait();
 }
 
-int main(int argc, char **argv) {
+void testDriverWrapper() {
     CassDriverWrapper wrapper("127.0.0.1", "demo");
     wrapper.connect();
 
@@ -84,7 +89,7 @@ int main(int argc, char **argv) {
             {"email",     type_index(typeid(string))},
             {"firstname", type_index(typeid(string))}
     };
-    if (auto result = wrapper.select("users", { }, attrsRow); holds_alternative<ResultCollection>(result)) {
+    if (auto result = wrapper.select("users", {}, attrsRow); holds_alternative<ResultCollection>(result)) {
         ResultCollection collection = get<ResultCollection>(result);
 
         for (const ContentValues &content : collection) {
@@ -104,7 +109,21 @@ int main(int argc, char **argv) {
     }
 
     wrapper.disconnect();
+}
 
+int main(int argc, char **argv) {
+    CassDriverAdapter driver(CassDriverWrapper("127.0.0.1", "demo"));
+    //driver.registerAdapter<Sensor, SensorAdapter>("sensor");
+    driver.registerAdapter<User, UserAdapter>("users");
+
+    if (variant<DriverError, vector<User>> result = driver.select<User, UserAdapter>({});
+            holds_alternative<vector<User>>(result)) {
+        vector<User> users = get<vector<User>>(result);
+        for (const User& user : users) {
+            cout << user.firstname << " " << user.lastname << endl;
+        }
+    }
+    
     RunServer();
 
     return 0;
