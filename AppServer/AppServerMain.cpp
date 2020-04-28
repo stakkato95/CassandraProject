@@ -123,7 +123,7 @@ int main(int argc, char **argv) {
             cout << user.firstname << " " << user.lastname << endl;
         }
     }
-    
+
     RunServer();
 
     return 0;

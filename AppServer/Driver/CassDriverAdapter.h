@@ -7,7 +7,6 @@
 
 #include "CassDriverWrapper.h"
 #include "../Adapter/Adapter.h"
-#include "../Model/User.h"
 
 #include <vector>
 #include <unordered_map>
@@ -27,25 +26,7 @@ public:
     }
 
     template<typename TModel, typename TAdapter>
-    std::variant<DriverError, std::vector<TModel>> select(const ContentValues &where) {
-        const std::type_info &modelType = typeid(TModel);
-        TAdapter* adapter = static_cast<TAdapter*>(adapters.at(modelType));
-        std::string &table = tables.at(modelType);
-
-        if (auto result = driver.select(table, where, adapter->getAttrs()); holds_alternative<ResultCollection>(result)) {
-            ResultCollection collection = get<ResultCollection>(result);
-
-            std::vector<TModel> resultVector;
-            for (const ContentValues &values : collection) {
-                TModel model = adapter->getModel(values);
-                resultVector.push_back(model);
-            }
-
-            return resultVector;
-        } else {
-            return get<DriverError>(result);
-        }
-    }
+    std::variant<DriverError, std::vector<TModel>> select(const ContentValues &where);
 
     template<typename TModel>
     std::optional<DriverError> insert(const TModel &model);
