@@ -11,8 +11,9 @@ using namespace std;
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::Status;
-using databaseapp::ServerRequest;
-using databaseapp::ServerResponse;
+using grpc::ClientReader;
+using databaseapp::EmptyRequest;
+using databaseapp::CompanyResponse;
 using databaseapp::ApplicationServer;
 
 class ApplicationServerClient {
@@ -23,19 +24,38 @@ public:
     // from the server.
     string getResponse(const string &user) {
         // Follows the same pattern as SayHello.
-        ServerRequest request;
-        request.set_topic(user);
-        ServerResponse reply;
+        EmptyRequest request;
+        CompanyResponse reply;
         ClientContext context;
 
-        // Here we can use the stub's newly available method we just added.
-        Status status = stub_->getResponse(&context, request, &reply);
-        if (status.ok()) {
-            return reply.content();
-        } else {
-            cout << status.error_code() << ": " << status.error_message() << endl;
-            return "RPC failed";
+
+        unique_ptr<ClientReader<CompanyResponse>> reader (stub_->getAllCompanies(&context, request));
+
+        CompanyResponse response;
+        while (reader->Read(&response)) {
+            cout << response.id() << " " << response.name() << " " << response.address() << endl;
         }
+
+        Status status = reader->Finish();
+        if (status.ok()) {
+            return "ok!!!";
+        } else {
+            return "error=(";
+        }
+
+
+
+
+
+
+        // Here we can use the stub's newly available method we just added.
+//        Status status = stub_->getResponse(&context, request, &reply);
+//        if (status.ok()) {
+//            return reply.content();
+//        } else {
+//            cout << status.error_code() << ": " << status.error_message() << endl;
+//            return "RPC failed";
+//        }
     }
 
 private:

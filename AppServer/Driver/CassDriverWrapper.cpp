@@ -40,6 +40,7 @@ bool CassDriverWrapper::connect() {
 void CassDriverWrapper::disconnect() {
     cass_cluster_free(cluster);
     cass_session_free(session);
+    isConnected = false;
 }
 
 variant<DriverError, ResultCollection>

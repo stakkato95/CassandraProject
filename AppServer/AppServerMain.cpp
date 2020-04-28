@@ -11,10 +11,14 @@
 
 #include "Driver/CassDriverWrapper.h"
 #include "Driver/CassDriverAdapter.h"
+
 #include "Adapter/SensorAdapter.h"
 #include "Adapter/UserAdapter.h"
+#include "Adapter/CompanyAdapter.h"
+
 #include "Model/Sensor.h"
 #include "Model/User.h"
+#include "Model/Company.h"
 
 using namespace std;
 
@@ -22,22 +26,52 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
-using databaseapp::ServerRequest;
-using databaseapp::ServerResponse;
+using grpc::ServerWriter;
+using databaseapp::EmptyRequest;
+using databaseapp::CompanyResponse;
 using databaseapp::ApplicationServer;
 
 // Logic and data behind the server's behavior.
 class ApplicationServerServiceImpl final : public ApplicationServer::Service {
-    Status getResponse(ServerContext *context, const ServerRequest *request, ServerResponse *reply) override {
-        string prefix("Hello ");
-        reply->set_content(prefix + request->topic());
+public:
+    explicit ApplicationServerServiceImpl(const CassDriverAdapter &d) : driver{d} {}
+
+    Status getAllCompanies(ServerContext *context,
+                           const EmptyRequest *request,
+                           ServerWriter<CompanyResponse> *writer) override {
+        vector<Company> companies{
+                {1, "Runt",      "Linz"},
+                {2, "Microsoft", "Canada"},
+                {3, "Tesla",     "USA"},
+        };
+
+        CompanyResponse response;
+        for (const Company &comp : companies) {
+            response.set_id(comp.id);
+            response.set_name(comp.name);
+            response.set_address(comp.address);
+            if (!writer->Write(response)) {
+                break;
+            }
+        }
+
+//        string prefix("Hello ");
+//        reply->set_content(prefix + request->topic());
         return Status::OK;
     }
+
+private:
+    const CassDriverAdapter &driver;
 };
 
 void RunServer() {
+    CassDriverAdapter driver(CassDriverWrapper("127.0.0.1", "demo"));
+    //driver.registerAdapter<Sensor, SensorAdapter>("sensor");
+    //driver.registerAdapter<User, UserAdapter>("users");
+    driver.registerAdapter<Company, CompanyAdapter>("company");
+
     string server_address("localhost:50051");
-    ApplicationServerServiceImpl service;
+    ApplicationServerServiceImpl service(driver);
 
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
@@ -119,7 +153,7 @@ void testDriverAdapter() {
     if (variant<DriverError, vector<User>> result = driver.select<User, UserAdapter>({});
             holds_alternative<vector<User>>(result)) {
         vector<User> users = get<vector<User>>(result);
-        for (const User& user : users) {
+        for (const User &user : users) {
             cout << user.firstname << " " << user.lastname << endl;
         }
     }
