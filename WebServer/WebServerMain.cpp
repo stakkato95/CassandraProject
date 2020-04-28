@@ -42,20 +42,6 @@ public:
         } else {
             return "error=(";
         }
-
-
-
-
-
-
-        // Here we can use the stub's newly available method we just added.
-//        Status status = stub_->getResponse(&context, request, &reply);
-//        if (status.ok()) {
-//            return reply.content();
-//        } else {
-//            cout << status.error_code() << ": " << status.error_message() << endl;
-//            return "RPC failed";
-//        }
     }
 
 private:

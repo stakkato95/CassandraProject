@@ -31,44 +31,45 @@ using databaseapp::EmptyRequest;
 using databaseapp::CompanyResponse;
 using databaseapp::ApplicationServer;
 
-// Logic and data behind the server's behavior.
 class ApplicationServerServiceImpl final : public ApplicationServer::Service {
 public:
-    explicit ApplicationServerServiceImpl(const CassDriverAdapter &d) : driver{d} {}
+    explicit ApplicationServerServiceImpl(CassDriverAdapter &d) : driver{d} {}
 
     Status getAllCompanies(ServerContext *context,
                            const EmptyRequest *request,
                            ServerWriter<CompanyResponse> *writer) override {
-        vector<Company> companies{
-                {1, "Runt",      "Linz"},
-                {2, "Microsoft", "Canada"},
-                {3, "Tesla",     "USA"},
-        };
-
-        CompanyResponse response;
-        for (const Company &comp : companies) {
-            response.set_id(comp.id);
-            response.set_name(comp.name);
-            response.set_address(comp.address);
-            if (!writer->Write(response)) {
-                break;
+        if (auto result = driver.select<Company, CompanyAdapter>({}); holds_alternative<vector<Company>>(result)) {
+            vector<Company> companies = get<vector<Company>>(result);
+            CompanyResponse response;
+            for (const Company &comp : companies) {
+                response.set_id(comp.id);
+                response.set_name(comp.name);
+                response.set_address(comp.address);
+                if (!writer->Write(response)) {
+                    break;
+                }
             }
+
+            return Status::OK;
+        } else {
+            DriverError& error = get<DriverError>(result);
+            cout << error.error << " " << error.message << endl;
         }
 
-//        string prefix("Hello ");
-//        reply->set_content(prefix + request->topic());
-        return Status::OK;
+        return Status::CANCELLED;
     }
 
 private:
-    const CassDriverAdapter &driver;
+    CassDriverAdapter &driver;
 };
 
 void RunServer() {
-    CassDriverAdapter driver(CassDriverWrapper("127.0.0.1", "demo"));
+    CassDriverAdapter driver(CassDriverWrapper("127.0.0.1", "autonomousflight"));
     //driver.registerAdapter<Sensor, SensorAdapter>("sensor");
     //driver.registerAdapter<User, UserAdapter>("users");
     driver.registerAdapter<Company, CompanyAdapter>("company");
+
+    variant<DriverError, vector<Company>> result = driver.select<Company, CompanyAdapter>({});
 
     string server_address("localhost:50051");
     ApplicationServerServiceImpl service(driver);

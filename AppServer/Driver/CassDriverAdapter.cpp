@@ -6,9 +6,11 @@
 
 #include "../Model/User.h"
 #include "../Model/Sensor.h"
+#include "../Model/Company.h"
 
 #include "../Adapter/UserAdapter.h"
 #include "../Adapter/SensorAdapter.h"
+#include "../Adapter/CompanyAdapter.h"
 
 using namespace std;
 
@@ -73,3 +75,6 @@ CassDriverAdapter::select<User, UserAdapter>(const ContentValues &where);
 
 template variant<DriverError, vector<Sensor>>
 CassDriverAdapter::select<Sensor, SensorAdapter>(const ContentValues &where);
+
+template variant<DriverError, vector<Company>>
+CassDriverAdapter::select<Company, CompanyAdapter>(const ContentValues &where);
