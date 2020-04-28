@@ -43,12 +43,20 @@ public:
 
     std::optional<DriverError> insert(const std::string &table, const ContentValues &values);
 
+    std::optional<DriverError> update(const std::string &table,
+                                      const ContentValues &where,
+                                      const ContentValues &values);
+
     std::optional<DriverError> del(const std::string &table, const ContentValues &where);
 
 private:
+    static std::string getSelectClause(const std::string &table, const ContentValues &values);
+
     static std::string getInsertClause(const std::string &table, const ContentValues &values);
 
-    static std::string getSelectClause(const std::string &table, const ContentValues &values);
+    static std::string getUpdateClause(const std::string &table,
+                                       const ContentValues &where,
+                                       const ContentValues &values);
 
     static std::string getDeleteClause(const std::string &table, const ContentValues &values);
 
@@ -65,7 +73,7 @@ private:
 
     std::string getError(CassFuture *future);
 
-    void bindParams(CassStatement *statement, const ContentValues &values);
+    void bindParams(CassStatement *statement, const ContentValues &values, int startIndex = 0);
 
     ContentValues getRow(const CassRow *row, const ContentMappings &attrs);
 

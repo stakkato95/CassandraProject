@@ -9,7 +9,6 @@
 
 #include "databaseapp.grpc.pb.h"
 
-#include "CassandraExample.h"
 #include "CassDriverWrapper.h"
 
 using namespace std;
@@ -66,9 +65,15 @@ int main(int argc, char **argv) {
 //    };
 //    wrapper.insert("users", attrs);
 
+
+    //test update
+//    ContentValues attrs{{"age", 111}};
+//    ContentValues whereUpdate{{"lastname", "Aaliaha"}};
+//    wrapper.update("users", whereUpdate, attrs);
+
     //test delete
-    ContentValues where{{"lastname", "Jones"}};
-    wrapper.del("users", where);
+//    ContentValues where{{"lastname", "Jones"}};
+//    wrapper.del("users", where);
 
     //test select
     //ContentValues where{{"lastname", "Jones"}};

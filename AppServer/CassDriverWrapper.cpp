@@ -42,11 +42,10 @@ void CassDriverWrapper::disconnect() {
     cass_session_free(session);
 }
 
-std::variant<DriverError, ResultCollection>
+variant<DriverError, ResultCollection>
 CassDriverWrapper::select(const string &table,
                           const ContentValues &where,
                           const ContentMappings &attrs) {
-    CassError rc = CASS_OK;
     CassStatement *statement = cass_statement_new(getSelectClause(table, where).c_str(), where.size());
     bindParams(statement, where);
 
@@ -54,6 +53,7 @@ CassDriverWrapper::select(const string &table,
     cass_future_wait(future);
 
     ResultCollection resultRows;
+    CassError rc = CASS_OK;
     rc = cass_future_error_code(future);
     if (rc != CASS_OK) {
         return returnError(rc, statement, future);
@@ -76,13 +76,36 @@ CassDriverWrapper::select(const string &table,
 }
 
 optional<DriverError> CassDriverWrapper::insert(const string &table, const ContentValues &values) {
-    CassError rc = CASS_OK;
     CassStatement *statement = cass_statement_new(getInsertClause(table, values).c_str(), values.size());
     bindParams(statement, values);
 
     CassFuture *future = cass_session_execute(session, statement);
     cass_future_wait(future);
 
+    CassError rc = CASS_OK;
+    rc = cass_future_error_code(future);
+    if (rc != CASS_OK) {
+        return returnError(rc, statement, future);
+    }
+
+    freeQuery(statement, future);
+
+    return {};
+}
+
+optional<DriverError> CassDriverWrapper::update(const string &table,
+                                                const ContentValues &where,
+                                                const ContentValues &values) {
+    string query = getUpdateClause(table, where, values);
+    CassStatement *statement = cass_statement_new(query.c_str(), where.size() + values.size());
+
+    bindParams(statement, values, 0);
+    bindParams(statement, where, values.size());
+
+    CassFuture *future = cass_session_execute(session, statement);
+    cass_future_wait(future);
+
+    CassError rc = CASS_OK;
     rc = cass_future_error_code(future);
     if (rc != CASS_OK) {
         return returnError(rc, statement, future);
@@ -94,13 +117,13 @@ optional<DriverError> CassDriverWrapper::insert(const string &table, const Conte
 }
 
 optional<DriverError> CassDriverWrapper::del(const string &table, const ContentValues &where) {
-    CassError rc = CASS_OK;
     CassStatement *statement = cass_statement_new(getDeleteClause(table, where).c_str(), where.size());
     bindParams(statement, where);
 
     CassFuture *future = cass_session_execute(session, statement);
     cass_future_wait(future);
 
+    CassError rc = CASS_OK;
     rc = cass_future_error_code(future);
     if (rc != CASS_OK) {
         return returnError(rc, statement, future);
@@ -114,6 +137,27 @@ optional<DriverError> CassDriverWrapper::del(const string &table, const ContentV
 /////////////////////////////////////////
 //static
 /////////////////////////////////////////
+
+string CassDriverWrapper::getSelectClause(const string &table, const ContentValues &values) {
+    ostringstream os;
+
+    os << "SELECT * FROM " << table;
+    if (values.empty()) {
+        return os.str();
+    }
+
+    os << " WHERE ";
+
+    for (auto it = begin(values); it != end(values); ++it) {
+        os << it->first << " = ?";
+
+        if (next(it) != end(values)) {
+            os << " AND ";
+        }
+    }
+
+    return os.str();
+}
 
 string CassDriverWrapper::getInsertClause(const string &table, const ContentValues &values) {
     ostringstream os;
@@ -136,20 +180,24 @@ string CassDriverWrapper::getInsertClause(const string &table, const ContentValu
     return os.str();
 }
 
-std::string CassDriverWrapper::getSelectClause(const std::string &table, const ContentValues &values) {
+string CassDriverWrapper::getUpdateClause(const string &table,
+                                          const ContentValues &where,
+                                          const ContentValues &values) {
     ostringstream os;
+    os << "UPDATE " << table << " SET ";
 
-    os << "SELECT * FROM " << table;
-    if (values.empty()) {
-        return os.str();
+    for (auto it = begin(values); it != end(values); ++it) {
+        os << it->first << " = ?";
+        if (next(it) != end(values)) {
+            os << ", ";
+        }
     }
 
     os << " WHERE ";
 
-    for (auto it = begin(values); it != end(values); ++it) {
+    for (auto it = begin(where); it != end(where); ++it) {
         os << it->first << " = ?";
-
-        if (next(it) != end(values)) {
+        if (next(it) != end(where)) {
             os << " AND ";
         }
     }
@@ -157,7 +205,7 @@ std::string CassDriverWrapper::getSelectClause(const std::string &table, const C
     return os.str();
 }
 
-std::string CassDriverWrapper::getDeleteClause(const std::string &table, const ContentValues &values) {
+string CassDriverWrapper::getDeleteClause(const string &table, const ContentValues &values) {
     ostringstream os;
 
     os << "DELETE FROM " << table;
@@ -214,17 +262,16 @@ string CassDriverWrapper::getError(CassFuture *future) {
     return string(message, messageLength);
 }
 
-void CassDriverWrapper::bindParams(CassStatement *statement, const ContentValues &values) {
-    int i = 0;
+void CassDriverWrapper::bindParams(CassStatement *statement, const ContentValues &values, int startIndex) {
     for (const auto&[attr, val] : values) {
         if (holds_alternative<string>(val)) {
-            cass_statement_bind_string(statement, i, get<string>(val).c_str());
+            cass_statement_bind_string(statement, startIndex, get<string>(val).c_str());
         } else if (holds_alternative<int>(val)) {
-            cass_statement_bind_int32(statement, i, get<int>(val));
+            cass_statement_bind_int32(statement, startIndex, get<int>(val));
         } else if (holds_alternative<float>(val)) {
-            cass_statement_bind_float(statement, i, get<float>(val));
+            cass_statement_bind_float(statement, startIndex, get<float>(val));
         }
-        i++;
+        startIndex++;
     }
 }
 
