@@ -2,8 +2,8 @@
 // Created by Artsiom Kaliaha on 4/29/20.
 //
 
-#ifndef WEBSERVER_COMPANYREQUESTHANDLER_H
-#define WEBSERVER_COMPANYREQUESTHANDLER_H
+#ifndef WEBSERVER_COMPANIESREQUESTHANDLER_H
+#define WEBSERVER_COMPANIESREQUESTHANDLER_H
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -29,9 +29,9 @@
 
 #include <fstream>
 
-class CompanyRequestHandler : public Poco::Net::HTTPRequestHandler {
+class CompaniesRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
-    explicit CompanyRequestHandler(const GrpcDriver &d);
+    explicit CompaniesRequestHandler(const GrpcDriver &d);
 
     void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response);
 
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif //WEBSERVER_COMPANYREQUESTHANDLER_H
+#endif //WEBSERVER_COMPANIESREQUESTHANDLER_H

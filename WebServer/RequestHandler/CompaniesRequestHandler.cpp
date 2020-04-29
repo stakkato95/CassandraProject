@@ -2,7 +2,7 @@
 // Created by Artsiom Kaliaha on 4/29/20.
 //
 
-#include "CompanyRequestHandler.h"
+#include "CompaniesRequestHandler.h"
 #include "../Helper.cpp"
 
 using namespace std;
@@ -11,9 +11,9 @@ using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 using Poco::Util::Application;
 
-CompanyRequestHandler::CompanyRequestHandler(const GrpcDriver &d) : driver{d} {}
+CompaniesRequestHandler::CompaniesRequestHandler(const GrpcDriver &d) : driver{d} {}
 
-void CompanyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response) {
+void CompaniesRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response) {
     Application &app = Application::instance();
     app.logger().information("Request from " + request.clientAddress().toString());
 

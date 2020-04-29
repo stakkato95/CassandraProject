@@ -23,23 +23,18 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "CompanyRequestHandler.h"
+#include "CompaniesRequestHandler.h"
 #include "../Mapping/GrpcDriver.h"
 
-class WebRequestHandlerFactory: public Poco::Net::HTTPRequestHandlerFactory {
+class WebRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
 public:
     explicit WebRequestHandlerFactory(const GrpcDriver &d);
+
 public:
-    Poco::Net::HTTPRequestHandler* createRequestHandler(const Poco::Net::HTTPServerRequest& request)
-    {
-        if (request.getURI() == "/")
-            return new CompanyRequestHandler(driver);
-        else
-            return 0;
-    }
+    Poco::Net::HTTPRequestHandler *createRequestHandler(const Poco::Net::HTTPServerRequest &request);
 
 private:
-    const GrpcDriver& driver;
+    const GrpcDriver &driver;
 };
 
 
