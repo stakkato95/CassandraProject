@@ -3,3 +3,5 @@
 //
 
 #include "WebRequestHandlerFactory.h"
+
+WebRequestHandlerFactory::WebRequestHandlerFactory(const GrpcDriver &d) : driver{d} {}

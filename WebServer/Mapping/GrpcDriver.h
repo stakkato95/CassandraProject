@@ -25,7 +25,7 @@ public:
     template<typename TModel, typename TMapper>
     void registerMapper();
 
-    std::vector<Company> getAllCompanies();
+    std::vector<Company> getAllCompanies() const;
 private:
     std::unordered_map<std::type_index, IMapper *> mappers;
     std::unique_ptr<databaseapp::ApplicationServer::Stub> stub;

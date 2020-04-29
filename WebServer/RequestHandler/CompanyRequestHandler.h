@@ -23,25 +23,16 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
+#include "../Mapping/GrpcDriver.h"
+
 class CompanyRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
-    void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse& response)
-    {
-        Poco::Util::Application& app = Poco::Util::Application::instance();
-        app.logger().information("Request from " + request.clientAddress().toString());
+    explicit CompanyRequestHandler(const GrpcDriver &d);
 
-        //Poco::Timestamp now;
-        //std::string dt(Poco::DateTimeFormatter::format(now, _format));
+    void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response);
 
-        response.setChunkedTransferEncoding(true);
-        response.setContentType("text/html");
-
-        std::ostream& ostr = response.send();
-        ostr << "<html><head><title>HTTPTimeServer powered by POCO C++ Libraries</title></head>";
-        ostr << "<body><p style=\"text-align: center; font-size: 48px;\">";
-        ostr << "Hello world!!!";
-        ostr << "</p></body></html>";
-    }
+private:
+    const GrpcDriver &driver;
 };
 
 

@@ -24,30 +24,16 @@
 #include "Poco/Util/HelpFormatter.h"
 
 #include "RequestHandler/WebRequestHandlerFactory.h"
+#include "Mapping/GrpcDriver.h"
 
 class WebServer : public Poco::Util::ServerApplication {
+public:
+    explicit WebServer(const GrpcDriver& d);
+
 protected:
-    int main(const std::vector<std::string> &args) {
-        int maxThreads = 16;
-        Poco::ThreadPool::defaultPool().addCapacity(maxThreads);
-
-        Poco::Net::HTTPServerParams *pParams = new Poco::Net::HTTPServerParams;
-        pParams->setMaxQueued(maxThreads);
-        pParams->setMaxThreads(16);
-
-        // set-up a server socket
-        Poco::Net::ServerSocket svs(9980);
-        // set-up a HTTPServer instance
-        Poco::Net::HTTPServer srv(new WebRequestHandlerFactory(), svs, pParams);
-        // start the HTTPServer
-        srv.start();
-        // wait for CTRL-C or kill
-        waitForTerminationRequest();
-        // Stop the HTTPServer
-        srv.stop();
-
-        return Application::EXIT_OK;
-    }
+    int main(const std::vector<std::string> &args);
+private:
+    const GrpcDriver& driver;
 };
 
 

@@ -10,7 +10,7 @@ class IMapper {
 
 template<typename TResponse, typename TModel>
 class Mapper : public IMapper {
-    virtual TModel getModel(const TResponse& response) = 0;
+    virtual TModel getModel(const TResponse& response) const = 0;
 };
 
 

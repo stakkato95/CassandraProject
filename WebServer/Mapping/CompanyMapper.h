@@ -11,7 +11,7 @@
 
 class CompanyMapper : public Mapper<databaseapp::CompanyResponse, Company> {
 public:
-    Company getModel(const databaseapp::CompanyResponse &response) override;
+    Company getModel(const databaseapp::CompanyResponse &response) const override;
 };
 
 

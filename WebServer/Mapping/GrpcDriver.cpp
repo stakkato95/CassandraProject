@@ -21,12 +21,12 @@ void GrpcDriver::registerMapper() {
     mappers[typeid(TModel)] = new TMapper;
 }
 
-vector<Company> GrpcDriver::getAllCompanies() {
+vector<Company> GrpcDriver::getAllCompanies() const {
     EmptyRequest req;
     ClientContext context;
     unique_ptr<ClientReader<CompanyResponse>> reader (stub->getAllCompanies(&context, req));
 
-    CompanyMapper* mapper = static_cast<CompanyMapper*>(mappers[typeid(Company)]);
+    const CompanyMapper* mapper = static_cast<CompanyMapper*>(mappers.at(typeid(Company)));
     vector<Company> result;
     CompanyResponse res;
     while (reader->Read(&res)) {
