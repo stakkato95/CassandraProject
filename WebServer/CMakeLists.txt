@@ -144,7 +144,7 @@ add_executable(WebServer WebServerMain.cpp
         Mapping/GrpcDriver.cpp Mapping/GrpcDriver.h
         ../Model/Company.h ../Model/Sensor.h
         Mapping/Mapper.h
-        Mapping/CompanyMapper.cpp Mapping/CompanyMapper.h)
+        Mapping/CompanyMapper.cpp Mapping/CompanyMapper.h Webserver.cpp Webserver.h RequestHandler/WebRequestHandlerFactory.cpp RequestHandler/WebRequestHandlerFactory.h RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h)
 target_link_libraries(WebServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}
