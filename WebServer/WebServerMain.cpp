@@ -6,6 +6,10 @@
 
 #include "databaseapp.grpc.pb.h"
 
+#include "../../Model/Company.h"
+#include "Mapping/GrpcDriver.h"
+#include "Mapping/CompanyMapper.h"
+
 using namespace std;
 
 using grpc::Channel;
@@ -76,11 +80,19 @@ int main(int argc, char **argv) {
         target_str = "localhost:50051";
     }
 
-    ApplicationServerClient greeter(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-    string user("world");
+//    ApplicationServerClient greeter(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
+//    string user("world");
+//
+//    string reply = greeter.getResponse(user);
+//    cout << "Greeter received: " << reply << endl;
 
-    string reply = greeter.getResponse(user);
-    cout << "Greeter received: " << reply << endl;
+    GrpcDriver driver(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
+    driver.registerMapper<Company, CompanyMapper>();
+
+    vector<Company> companies = driver.getAllCompanies();
+    for (const Company& comp : companies) {
+        cout << comp.id << " " << comp.name << " " << comp.address << endl;
+    }
 
     return 0;
 }

@@ -66,7 +66,11 @@ foreach(_target
         WebServerMain)
     add_executable(${_target} "${_target}.cpp"
             ${hw_proto_srcs}
-            ${hw_grpc_srcs})
+            ${hw_grpc_srcs}
+            Mapping/GrpcDriver.cpp Mapping/GrpcDriver.h
+            ../Model/Company.h ../Model/Sensor.h
+            Mapping/Mapper.h
+            Mapping/CompanyMapper.cpp Mapping/CompanyMapper.h)
     target_link_libraries(${_target}
             ${_REFLECTION}
             ${_GRPC_GRPCPP}
