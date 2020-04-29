@@ -15,6 +15,7 @@
 #include "Adapter/SensorAdapter.h"
 #include "Adapter/UserAdapter.h"
 #include "Adapter/CompanyAdapter.h"
+#include "Adapter/DroneAdapter.h"
 
 #include "../Model/Sensor.h"
 #include "../Model/User.h"
@@ -161,7 +162,20 @@ void testDriverAdapter() {
 }
 
 int main(int argc, char **argv) {
-    testDriverAdapter();
+    //testDriverAdapter();
+
+    CassDriverAdapter driver(CassDriverWrapper("127.0.0.1", "autonomousflight"));
+    driver.registerAdapter<Drone, DroneAdapter>("drone");
+    if (variant<DriverError, vector<Drone>> result = driver.select<Drone, DroneAdapter>({});
+            holds_alternative<vector<Drone>>(result)) {
+        vector<Drone> users = get<vector<Drone>>(result);
+        for (const Drone &user : users) {
+            cout << user.droneId << " " << user.model << endl;
+        }
+    } else {
+        DriverError er = get<DriverError>(result);
+        cout << er.error << " " << er.message << endl;
+    }
 
     RunServer();
 

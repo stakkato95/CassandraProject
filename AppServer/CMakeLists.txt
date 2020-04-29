@@ -142,7 +142,8 @@ add_executable(AppServer
         Adapter/Adapter.cpp Adapter/Adapter.h
         ../Model/Sensor.h Adapter/SensorAdapter.cpp Adapter/SensorAdapter.h
         ../Model/User.h Adapter/UserAdapter.cpp Adapter/UserAdapter.h
-        ../Model/Company.h Adapter/CompanyAdapter.cpp Adapter/CompanyAdapter.h)
+        ../Model/Company.h Adapter/CompanyAdapter.cpp Adapter/CompanyAdapter.h
+        ../Model/Drone.h Adapter/DroneAdapter.cpp Adapter/DroneAdapter.h)
 target_link_libraries(AppServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}

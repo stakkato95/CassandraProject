@@ -2,19 +2,37 @@ syntax = "proto3";
 
 package databaseapp;
 
-// The Application service definition.
+// The Application service definition
 service ApplicationServer {
-    // Get simple response
+
     rpc getAllCompanies (EmptyRequest) returns (stream CompanyResponse) {}
+
+    rpc getCompany (CompanyRequest) returns (stream CompanyResponse) {}
+
+    rpc getDrones (CompanyRequest) returns (stream DroneResponse) {}
 }
 
 // Empty request message
 message EmptyRequest {
 }
 
-// The response message
+// Empty request message
+message CompanyRequest {
+    int32 id = 1;
+}
+
+// Company response message
 message CompanyResponse {
     int32 id = 1;
     string name = 2;
     string address = 3;
+}
+
+// Drone response message
+message DroneResponse {
+    int32 companyid = 1;
+    string companyname = 2;
+    int32 droneid = 3;
+    string model = 4;
+    string firmwareversion = 5;
 }
