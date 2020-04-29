@@ -6,6 +6,9 @@
 
 using namespace std;
 
+//using namespace inja;
+//using json = nlohmann::json;
+
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 using Poco::Util::Application;
@@ -16,33 +19,27 @@ void CompanyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServer
     Application &app = Application::instance();
     app.logger().information("Request from " + request.clientAddress().toString());
 
-
     vector<Company> companies = driver.getAllCompanies();
-    for (const Company &comp : companies) {
-        cout << comp.id << " " << comp.name << " " << comp.address << endl;
-    }
-
-    //Poco::Timestamp now;
-    //std::string dt(Poco::DateTimeFormatter::format(now, _format));
 
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
 
-    std::ostream &ostr = response.send();
-    ostr << "<html><head><title>HTTPTimeServer powered by POCO C++ Libraries</title></head>";
-    ostr << "<body><p style=\"text-align: center; font-size: 48px;\">";
-    ostr << "Hello world!!!";
-    ostr << "</p>";
 
-    ostr << "<table style=\"width:100%\">";
+    ifstream file("../html/companies.html");
+    string html((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+
+    std::string singleCompany{"<tr><th>{{id}}</th><th>{{name}}</th><th>{{address}}</th></tr>"};
+
+    mstch::array list;
     for (const Company &comp : companies) {
-        ostr << "<tr>";
-        ostr << "<th>" << comp.id << "</th>";
-        ostr << "<th>" << comp.name << "</th>";
-        ostr << "<th>" << comp.address << "</th>";
-        ostr << "</tr>";
+        list.push_back(mstch::map{
+                {"id",      to_string(comp.id)},
+                {"name",    comp.name},
+                {"address", comp.address}
+        });
     }
-    ostr << "</table>";
+    mstch::map context{{"companies", list}};
 
-    ostr << "</body></html>";
+    ostream &ostr = response.send();
+    ostr << mstch::render(html, context, {{"singleCompany", singleCompany}}) << std::endl;
 }

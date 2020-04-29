@@ -25,6 +25,10 @@
 
 #include "../Mapping/GrpcDriver.h"
 
+#include <mstch/mstch.hpp>
+
+#include <fstream>
+
 class CompanyRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
     explicit CompanyRequestHandler(const GrpcDriver &d);
