@@ -16,10 +16,4 @@ int main(int argc, char **argv) {
 
     WebServer app(driver);
     return app.run(argc, argv);
-
-
-//    vector<Company> companies = driver.getAllCompanies();
-//    for (const Company& comp : companies) {
-//        cout << comp.id << " " << comp.name << " " << comp.address << endl;
-//    }
 }
