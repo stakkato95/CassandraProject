@@ -3,11 +3,9 @@
 //
 
 #include "CompanyRequestHandler.h"
+#include "../Helper.cpp"
 
 using namespace std;
-
-//using namespace inja;
-//using json = nlohmann::json;
 
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
@@ -24,22 +22,16 @@ void CompanyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServer
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
 
+    string page = processTemplate<Company>("companies",
+                                           "companies",
+                                           "singleCompany",
+                                           "<tr><th>{{id}}</th><th>{{name}}</th><th>{{address}}</th></tr>",
+                                           companies,
+                                           [](const Company &c) {
+                                               return mstch::map{{"id",      to_string(c.id)},
+                                                                 {"name",    c.name},
+                                                                 {"address", c.address}};
+                                           });
 
-    ifstream file("../html/companies.html");
-    string html((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
-
-    std::string singleCompany{"<tr><th>{{id}}</th><th>{{name}}</th><th>{{address}}</th></tr>"};
-
-    mstch::array list;
-    for (const Company &comp : companies) {
-        list.push_back(mstch::map{
-                {"id",      to_string(comp.id)},
-                {"name",    comp.name},
-                {"address", comp.address}
-        });
-    }
-    mstch::map context{{"companies", list}};
-
-    ostream &ostr = response.send();
-    ostr << mstch::render(html, context, {{"singleCompany", singleCompany}}) << std::endl;
+    response.send() << page;
 }

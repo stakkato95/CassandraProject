@@ -155,7 +155,7 @@ add_executable(WebServer WebServerMain.cpp
         Mapping/CompanyMapper.cpp Mapping/CompanyMapper.h
         Webserver.cpp Webserver.h
         RequestHandler/WebRequestHandlerFactory.cpp RequestHandler/WebRequestHandlerFactory.h
-        RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h)
+        RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h Helper.cpp)
 target_link_libraries(WebServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}
