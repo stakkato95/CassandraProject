@@ -23,8 +23,10 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "CompaniesRequestHandler.h"
 #include "../Mapping/GrpcDriver.h"
+
+#include "CompaniesRequestHandler.h"
+#include "CompanyRequestHandler.h"
 
 class WebRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
 public:

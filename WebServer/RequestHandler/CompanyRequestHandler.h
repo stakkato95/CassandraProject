@@ -2,8 +2,8 @@
 // Created by Artsiom Kaliaha on 4/29/20.
 //
 
-#ifndef WEBSERVER_COMPANIESREQUESTHANDLER_H
-#define WEBSERVER_COMPANIESREQUESTHANDLER_H
+#ifndef WEBSERVER_COMPANYREQUESTHANDLER_H
+#define WEBSERVER_COMPANYREQUESTHANDLER_H
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -25,15 +25,16 @@
 
 #include "../Mapping/GrpcDriver.h"
 
-class CompaniesRequestHandler : public Poco::Net::HTTPRequestHandler {
+class CompanyRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
-    explicit CompaniesRequestHandler(const GrpcDriver &d);
+    explicit CompanyRequestHandler(const GrpcDriver &d, int id);
 
     void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response);
 
 private:
     const GrpcDriver &driver;
+    int companyId;
 };
 
 
-#endif //WEBSERVER_COMPANIESREQUESTHANDLER_H
+#endif //WEBSERVER_COMPANYREQUESTHANDLER_H

@@ -25,7 +25,7 @@ void CompaniesRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServ
     string page = processTemplate<Company>("companies",
                                            "companies",
                                            "singleCompany",
-                                           "<tr><th>{{id}}</th><th>{{name}}</th><th>{{address}}</th></tr>",
+                                           "<tr onclick=\"window.location='/company/{{id}}'\"><th>{{id}}</th><th>{{name}}</th><th>{{address}}</th></tr>",
                                            companies,
                                            [](const Company &c) {
                                                return mstch::map{{"id",      to_string(c.id)},
