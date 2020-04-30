@@ -32,6 +32,8 @@ public:
     Company getCompanyById(int companyId) const;
 
     std::vector<Drone> getDrones(int companyId) const;
+
+    bool saveCompany(const Company& company) const;
 private:
     std::unordered_map<std::type_index, IMapper *> mappers;
     std::unique_ptr<databaseapp::ApplicationServer::Stub> stub;

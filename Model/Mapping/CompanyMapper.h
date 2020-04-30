@@ -7,11 +7,11 @@
 
 #include "Mapper.h"
 #include "databaseapp.grpc.pb.h"
-#include "../../Model/Company.h"
+#include "../Company.h"
 
-class CompanyMapper : public Mapper<databaseapp::CompanyResponse, Company> {
+class CompanyMapper : public Mapper<databaseapp::CompanyMessage, Company> {
 public:
-    Company getModel(const databaseapp::CompanyResponse &response) const override;
+    Company getModel(const databaseapp::CompanyMessage &response) const override;
 };
 
 

@@ -5,13 +5,13 @@ package databaseapp;
 // The Application service definition
 service ApplicationServer {
 
-    rpc getAllCompanies (EmptyRequest) returns (stream CompanyResponse) {}
+    rpc getAllCompanies (EmptyRequest) returns (stream CompanyMessage) {}
 
-    rpc getCompany (CompanyRequest) returns (CompanyResponse) {}
+    rpc getCompany (CompanyRequest) returns (CompanyMessage) {}
 
     rpc getDrones (CompanyRequest) returns (stream DroneResponse) {}
 
-    rpc saveCompany (SaveCompanyRequest) returns (SaveCompanyResponse) {}
+    rpc saveCompany (CompanyMessage) returns (SaveCompanyResponse) {}
 }
 
 // Empty request message
@@ -24,7 +24,7 @@ message CompanyRequest {
 }
 
 // Company response message
-message CompanyResponse {
+message CompanyMessage {
     int32 id = 1;
     string name = 2;
     string address = 3;

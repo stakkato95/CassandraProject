@@ -4,7 +4,7 @@
 
 #include "CompanyMapper.h"
 
-Company CompanyMapper::getModel(const databaseapp::CompanyResponse &response) const {
+Company CompanyMapper::getModel(const databaseapp::CompanyMessage &response) const {
     return {
             response.id(),
             response.name(),

@@ -22,12 +22,12 @@
 #include "Adapter/CompanyAdapter.h"
 #include "Adapter/DroneAdapter.h"
 
-#include "../../Model/Mapping/Mapper.h"
-#include "../../Model/Mapping/CompanyMapper.h"
-#include "../../Model/Mapping/DroneMapper.h"
+#include "../Model/Mapping/Mapper.h"
+#include "../Model/Mapping/CompanyMapper.h"
+#include "../Model/Mapping/DroneMapper.h"
 
-#include "../../Model/Company.h"
-#include "../../Model/Drone.h"
+#include "../Model/Company.h"
+#include "../Model/Drone.h"
 
 class ApplicationServerServiceImpl final : public databaseapp::ApplicationServer::Service {
 public:
@@ -38,15 +38,19 @@ public:
 
     grpc::Status getAllCompanies(grpc::ServerContext *context,
                                  const databaseapp::EmptyRequest *request,
-                                 grpc::ServerWriter<databaseapp::CompanyResponse> *writer) override;
+                                 grpc::ServerWriter<databaseapp::CompanyMessage> *writer) override;
 
     grpc::Status getCompany(grpc::ServerContext *context,
                             const databaseapp::CompanyRequest *request,
-                            databaseapp::CompanyResponse *writer) override;
+                            databaseapp::CompanyMessage *writer) override;
 
     grpc::Status getDrones(grpc::ServerContext *context,
                            const databaseapp::CompanyRequest *request,
                            grpc::ServerWriter<databaseapp::DroneResponse> *writer) override;
+
+    grpc::Status saveCompany(grpc::ServerContext *context,
+                             const databaseapp::CompanyMessage *request,
+                             databaseapp::SaveCompanyResponse *response) override;
 
 private:
     CassDriverAdapter &driver;

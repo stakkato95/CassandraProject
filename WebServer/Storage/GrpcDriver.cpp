@@ -13,9 +13,10 @@ using grpc::ClientReader;
 
 using databaseapp::EmptyRequest;
 using databaseapp::CompanyRequest;
-using databaseapp::CompanyResponse;
+using databaseapp::CompanyMessage;
 using databaseapp::DroneResponse;
 using databaseapp::ApplicationServer;
+using databaseapp::SaveCompanyResponse;
 
 GrpcDriver::GrpcDriver(shared_ptr<Channel> channel) : stub(ApplicationServer::NewStub(channel)) {}
 
@@ -27,11 +28,11 @@ void GrpcDriver::registerMapper() {
 vector<Company> GrpcDriver::getAllCompanies() const {
     EmptyRequest req;
     ClientContext context;
-    unique_ptr<ClientReader<CompanyResponse>> reader(stub->getAllCompanies(&context, req));
+    unique_ptr<ClientReader<CompanyMessage>> reader(stub->getAllCompanies(&context, req));
 
     const CompanyMapper *mapper = static_cast<CompanyMapper *>(mappers.at(typeid(Company)));
     vector<Company> result;
-    CompanyResponse res;
+    CompanyMessage res;
     while (reader->Read(&res)) {
         result.push_back(mapper->getModel(res));
         //cout << res.id() << " " << res.name() << " " << res.address() << endl;
@@ -48,7 +49,7 @@ vector<Company> GrpcDriver::getAllCompanies() const {
 Company GrpcDriver::getCompanyById(int companyId) const {
     CompanyRequest req;
     req.set_id(companyId);
-    CompanyResponse res;
+    CompanyMessage res;
 
     ClientContext context;
     Status status = stub->getCompany(&context, req, &res);
@@ -81,6 +82,23 @@ vector<Drone> GrpcDriver::getDrones(int companyId) const {
     }
 
     return {};
+}
+
+bool GrpcDriver::saveCompany(const Company& company) const {
+    CompanyMessage req;
+    req.set_id(company.id);
+    req.set_name(company.name);
+    req.set_address(company.address);
+
+    SaveCompanyResponse res;
+    ClientContext context;
+    Status status = stub->saveCompany(&context, req, &res);
+
+    if (status.ok()) {
+        return res.issaved();
+    }
+
+    return false;
 }
 
 ////////////////////////

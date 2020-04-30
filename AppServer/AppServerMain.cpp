@@ -10,6 +10,8 @@
 #include "../Model/Mapping/CompanyMapper.h"
 #include "../Model/Mapping/DroneMapper.h"
 
+#include "databaseapp.grpc.pb.h"
+
 using namespace std;
 
 using grpc::Server;

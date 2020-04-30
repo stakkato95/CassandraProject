@@ -7,7 +7,7 @@
 
 #include "Mapper.h"
 #include "databaseapp.grpc.pb.h"
-#include "../../Model/Drone.h"
+#include "../Drone.h"
 
 class DroneMapper : public Mapper<databaseapp::DroneResponse, Drone> {
 public:

@@ -28,6 +28,13 @@ void AddCompanyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPSer
         app.logger().information(form.get("companyId"));
         app.logger().information(form.get("companyName"));
         app.logger().information(form.get("companyAddress"));
+
+        storage.saveCompany({
+                                    stoi(form.get("companyId")),
+                                    form.get("companyName"),
+                                    form.get("companyAddress")
+                            });
+
         response.redirect("/companies", HTTPResponse::HTTP_TEMPORARY_REDIRECT);
         return;
     }

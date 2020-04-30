@@ -18,8 +18,6 @@ CompanyResponse Storage::getCompanyInfo(int companyId) const {
     return { move(company), move(drones) };
 }
 
-bool Storage::saveCompany(const Company& company) {
-//    driver.
-
-    return true;
+bool Storage::saveCompany(const Company& company) const {
+    return driver.saveCompany(company);
 }
