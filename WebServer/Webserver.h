@@ -24,16 +24,17 @@
 #include "Poco/Util/HelpFormatter.h"
 
 #include "RequestHandler/WebRequestHandlerFactory.h"
-#include "Mapping/GrpcDriver.h"
+#include "Storage/Storage.h"
 
 class WebServer : public Poco::Util::ServerApplication {
 public:
-    explicit WebServer(const GrpcDriver& d);
+    explicit WebServer(const Storage &s);
 
 protected:
     int main(const std::vector<std::string> &args);
+
 private:
-    const GrpcDriver& driver;
+    const Storage &storage;
 };
 
 

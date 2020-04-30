@@ -74,7 +74,7 @@ Status ApplicationServerServiceImpl::getDrones(ServerContext *context,
 Status ApplicationServerServiceImpl::getCompany(ServerContext *context,
                                                 const CompanyRequest *request,
                                                 CompanyResponse *response) {
-    if (auto result = driver.select<Company, CompanyAdapter>({{"companyid", request->id()}});
+    if (auto result = driver.select<Company, CompanyAdapter>({{"id", request->id()}});
             holds_alternative<vector<Company>>(result)) {
         vector<Company> companies = get<vector<Company>>(result);
         if (companies.empty()) {

@@ -149,13 +149,17 @@ find_package(mstch)
 add_executable(WebServer WebServerMain.cpp
         ${hw_proto_srcs}
         ${hw_grpc_srcs}
-        Mapping/GrpcDriver.cpp Mapping/GrpcDriver.h
+        Storage/GrpcDriver.cpp Storage/GrpcDriver.h
         ../Model/Company.h ../Model/Sensor.h
         Mapping/Mapper.h
         Mapping/CompanyMapper.cpp Mapping/CompanyMapper.h
+        Mapping/DroneMapper.cpp Mapping/DroneMapper.h
         Webserver.cpp Webserver.h
+        Helper.cpp
+        Storage/Storage.cpp Storage/Storage.h
         RequestHandler/WebRequestHandlerFactory.cpp RequestHandler/WebRequestHandlerFactory.h
-        RequestHandler/CompaniesRequestHandler.cpp RequestHandler/CompaniesRequestHandler.h Helper.cpp RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h)
+        RequestHandler/CompaniesRequestHandler.cpp RequestHandler/CompaniesRequestHandler.h
+        RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h)
 target_link_libraries(WebServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}

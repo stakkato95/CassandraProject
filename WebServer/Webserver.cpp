@@ -10,7 +10,7 @@ using Poco::Net::ServerSocket;
 using Poco::Net::HTTPServer;
 using Poco::ThreadPool;
 
-WebServer::WebServer(const GrpcDriver &d) : driver{d} {}
+WebServer::WebServer(const Storage &s) : storage{s} {}
 
 int WebServer::main(const vector<string> &args) {
     int maxThreads = 16;
@@ -23,7 +23,7 @@ int WebServer::main(const vector<string> &args) {
     // set-up a server socket
     ServerSocket svs(9980);
     // set-up a HTTPServer instance
-    HTTPServer srv(new WebRequestHandlerFactory(driver), svs, pParams);
+    HTTPServer srv(new WebRequestHandlerFactory(storage), svs, pParams);
     // start the HTTPServer
     srv.start();
     // wait for CTRL-C or kill

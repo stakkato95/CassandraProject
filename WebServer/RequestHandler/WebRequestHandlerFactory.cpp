@@ -12,14 +12,14 @@ using namespace std;
 static const string COMPANIES = "/companies";
 static const string COMPANY = "/company/";
 
-WebRequestHandlerFactory::WebRequestHandlerFactory(const GrpcDriver &d) : driver{d} {}
+WebRequestHandlerFactory::WebRequestHandlerFactory(const Storage &s) : storage{s} {}
 
 HTTPRequestHandler *WebRequestHandlerFactory::createRequestHandler(const HTTPServerRequest &request) {
     if (request.getURI() == COMPANIES) {
-        return new CompaniesRequestHandler(driver);
+        return new CompaniesRequestHandler(storage);
     } else if (request.getURI().starts_with(COMPANY)) {
         int companyId = std::stoi(request.getURI().substr(COMPANY.length()));
-        return new CompanyRequestHandler(driver, companyId);
+        return new CompanyRequestHandler(storage, companyId);
     }
 
     return 0;

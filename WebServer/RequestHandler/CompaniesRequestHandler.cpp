@@ -11,13 +11,13 @@ using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
 using Poco::Util::Application;
 
-CompaniesRequestHandler::CompaniesRequestHandler(const GrpcDriver &d) : driver{d} {}
+CompaniesRequestHandler::CompaniesRequestHandler(const Storage &s) : storage{s} {}
 
 void CompaniesRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerResponse &response) {
     Application &app = Application::instance();
     app.logger().information("Request from " + request.clientAddress().toString());
 
-    vector<Company> companies = driver.getAllCompanies();
+    vector<Company> companies = storage.getAllCompanies();
 
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");

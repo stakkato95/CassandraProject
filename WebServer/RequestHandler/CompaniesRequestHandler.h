@@ -23,16 +23,16 @@
 #include "Poco/Util/OptionSet.h"
 #include "Poco/Util/HelpFormatter.h"
 
-#include "../Mapping/GrpcDriver.h"
+#include "../Storage/Storage.h"
 
 class CompaniesRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
-    explicit CompaniesRequestHandler(const GrpcDriver &d);
+    explicit CompaniesRequestHandler(const Storage &s);
 
     void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response);
 
 private:
-    const GrpcDriver &driver;
+    const Storage &storage;
 };
 
 
