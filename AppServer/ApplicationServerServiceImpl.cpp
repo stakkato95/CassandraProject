@@ -20,6 +20,11 @@ using databaseapp::DroneResponse;
 
 ApplicationServerServiceImpl::ApplicationServerServiceImpl(CassDriverAdapter &d) : driver{d} {}
 
+template<typename TModel, typename TMapper>
+void ApplicationServerServiceImpl::registerMapper() {
+    mappers[typeid(TModel)] = new TMapper;
+}
+
 Status ApplicationServerServiceImpl::getAllCompanies(ServerContext *context,
                                                      const EmptyRequest *request,
                                                      ServerWriter<CompanyResponse> *writer) {
@@ -94,3 +99,10 @@ Status ApplicationServerServiceImpl::getCompany(ServerContext *context,
 
     return Status::CANCELLED;
 }
+
+////////////////////////
+//templates implementation given we know all the classes that will use our class
+////////////////////////
+
+template void ApplicationServerServiceImpl::registerMapper<Company, CompanyMapper>();
+template void ApplicationServerServiceImpl::registerMapper<Drone, DroneMapper>();

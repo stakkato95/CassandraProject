@@ -8,6 +8,7 @@
 #include <iostream>
 #include <memory>
 #include <typeindex>
+#include <unordered_map>
 
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
@@ -21,9 +22,19 @@
 #include "Adapter/CompanyAdapter.h"
 #include "Adapter/DroneAdapter.h"
 
+#include "../../Model/Mapping/Mapper.h"
+#include "../../Model/Mapping/CompanyMapper.h"
+#include "../../Model/Mapping/DroneMapper.h"
+
+#include "../../Model/Company.h"
+#include "../../Model/Drone.h"
+
 class ApplicationServerServiceImpl final : public databaseapp::ApplicationServer::Service {
 public:
     explicit ApplicationServerServiceImpl(CassDriverAdapter &d);
+
+    template<typename TModel, typename TMapper>
+    void registerMapper();
 
     grpc::Status getAllCompanies(grpc::ServerContext *context,
                                  const databaseapp::EmptyRequest *request,
@@ -39,6 +50,7 @@ public:
 
 private:
     CassDriverAdapter &driver;
+    std::unordered_map<std::type_index, IMapper *> mappers;
 };
 
 

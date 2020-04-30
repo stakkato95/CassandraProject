@@ -4,6 +4,12 @@
 
 #include "ApplicationServerServiceImpl.h"
 
+#include "../Model/Company.h"
+#include "../Model/Drone.h"
+
+#include "../Model/Mapping/CompanyMapper.h"
+#include "../Model/Mapping/DroneMapper.h"
+
 using namespace std;
 
 using grpc::Server;
@@ -22,6 +28,8 @@ void RunServer() {
     
     string serverAddress("localhost:50051");
     ApplicationServerServiceImpl service(driver);
+    service.registerMapper<Company, CompanyMapper>();
+    service.registerMapper<Drone, DroneMapper>();
 
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
