@@ -155,11 +155,12 @@ add_executable(WebServer WebServerMain.cpp
         Mapping/CompanyMapper.cpp Mapping/CompanyMapper.h
         Mapping/DroneMapper.cpp Mapping/DroneMapper.h
         Webserver.cpp Webserver.h
-        Helper.cpp
+        Helper.h
         Storage/Storage.cpp Storage/Storage.h
         RequestHandler/WebRequestHandlerFactory.cpp RequestHandler/WebRequestHandlerFactory.h
         RequestHandler/CompaniesRequestHandler.cpp RequestHandler/CompaniesRequestHandler.h
-        RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h)
+        RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h
+        RequestHandler/AddCompanyRequestHandler.cpp RequestHandler/AddCompanyRequestHandler.h)
 target_link_libraries(WebServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}

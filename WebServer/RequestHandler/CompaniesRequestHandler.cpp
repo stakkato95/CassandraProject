@@ -3,12 +3,12 @@
 //
 
 #include "CompaniesRequestHandler.h"
-#include "../Helper.cpp"
 
 using namespace std;
 
 using Poco::Net::HTTPServerRequest;
 using Poco::Net::HTTPServerResponse;
+
 using Poco::Util::Application;
 
 CompaniesRequestHandler::CompaniesRequestHandler(const Storage &s) : storage{s} {}
@@ -17,11 +17,11 @@ void CompaniesRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServ
     Application &app = Application::instance();
     app.logger().information("Request from " + request.clientAddress().toString());
 
-    vector<Company> companies = storage.getAllCompanies();
-
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
 
+
+    vector<Company> companies = storage.getAllCompanies();
     string page = processTemplate<Company>("companies",
                                            "companies",
                                            "singleCompany",

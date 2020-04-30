@@ -1,10 +1,11 @@
 //
-// Created by Artsiom Kaliaha on 4/29/20.
+// Created by Artsiom Kaliaha on 4/30/20.
 //
 
-#ifndef WEBSERVER_COMPANYREQUESTHANDLER_H
-#define WEBSERVER_COMPANYREQUESTHANDLER_H
+#ifndef WEBSERVER_ADDCOMPANYREQUESTHANDLER_H
+#define WEBSERVER_ADDCOMPANYREQUESTHANDLER_H
 
+#include "Poco/Net/HTMLForm.h"
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
 #include "Poco/Net/HTTPRequestHandlerFactory.h"
@@ -26,16 +27,15 @@
 #include "../Storage/Storage.h"
 #include "../Helper.h"
 
-class CompanyRequestHandler : public Poco::Net::HTTPRequestHandler {
+class AddCompanyRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
-    explicit CompanyRequestHandler(const Storage &s, int id);
+    explicit AddCompanyRequestHandler(const Storage &s);
 
     void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response);
 
 private:
     const Storage &storage;
-    int companyId;
 };
 
 
-#endif //WEBSERVER_COMPANYREQUESTHANDLER_H
+#endif //WEBSERVER_ADDCOMPANYREQUESTHANDLER_H

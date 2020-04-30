@@ -24,6 +24,7 @@
 #include "Poco/Util/HelpFormatter.h"
 
 #include "../Storage/Storage.h"
+#include "../Helper.h"
 
 class CompaniesRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:

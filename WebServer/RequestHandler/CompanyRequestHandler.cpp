@@ -3,7 +3,6 @@
 //
 
 #include "CompanyRequestHandler.h"
-#include "../Helper.cpp"
 
 using namespace std;
 

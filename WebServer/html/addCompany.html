@@ -8,31 +8,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Companies</title>
-
-    <style>
-        tr:hover {
-            background: lightgray;
-        }
-    </style>
+    <title>Add company</title>
 
 </head>
 <body>
 
-<a class="btn btn-primary" href="addCompany.html" role="button">Link</a>
-
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Address</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#companies}} {{> singleCompany}} {{/companies}}
-    </tbody>
-</table>
+<form method="POST" class="py-4 px-4">
+    <label for="companyId">Company id</label>
+    <input type="text" name="companyId" class="form-control" id="companyId" placeholder="Name">
+    <label for="companyName">Company name</label>
+    <input type="text" name="companyName" class="form-control" id="companyName" placeholder="Name">
+    <label for="companyAddress" class="mt-2">Address</label>
+    <input type="text" name="companyAddress" class="form-control" id="companyAddress" placeholder="1234 Main St">
+    <label for="inputCity" class="mt-2">City</label>
+    <input type="text" class="form-control" id="inputCity" readonly>
+    <label for="inputZip" class="mt-2">Zip</label>
+    <input type="text" class="form-control" id="inputZip" readonly>
+    <button type="submit" class="btn btn-primary mt-4">Register company</button>
+</form>
 
 <!--Bootstrap-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

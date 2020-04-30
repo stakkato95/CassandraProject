@@ -27,6 +27,7 @@
 
 #include "CompaniesRequestHandler.h"
 #include "CompanyRequestHandler.h"
+#include "AddCompanyRequestHandler.h"
 
 class WebRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
 public:
