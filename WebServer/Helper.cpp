@@ -17,9 +17,10 @@ template<typename TModel>
 string processTemplate(const string &fileName,
                        const string &allItems,
                        const string &singleItem,
-                       const string &itemView,
+                       const string &itemViewFileName,
                        const vector<TModel> items,
-                       function<mstch::map(const TModel &)> modelMapper) {
+                       function<mstch::map(const TModel &)> modelMapper,
+                       const mstch::map &additionalItems = {}) {
     ifstream file("../html/" + fileName + ".html");
     string html((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
 
@@ -29,7 +30,13 @@ string processTemplate(const string &fileName,
     }
     mstch::map context{{allItems, list}};
 
-    return mstch::render(html, context, {{singleItem, itemView}});
+    for (const auto& pair : additionalItems) {
+        context.insert(pair);
+    }
+
+    ifstream itemViewFile("../html/" + itemViewFileName + ".html");
+    string itemViewHtml((istreambuf_iterator<char>(itemViewFile)), istreambuf_iterator<char>());
+    return mstch::render(html, context, {{singleItem, itemViewHtml}});
 }
 
 #endif //WEBSERVER_HELPER_CPP

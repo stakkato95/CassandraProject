@@ -22,18 +22,24 @@ void CompanyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServer
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
 
-    response.send() << "hello world " << companyId;
+    mstch::map context{
+            {"id",      result.company.id},
+            {"name",    result.company.name},
+            {"address", result.company.address}
+    };
 
-//    string page = processTemplate<Company>("company",
-//                                           "company",
-//                                           "singleCompany",
-//                                           "<tr><th>{{id}}</th><th>{{name}}</th><th>{{address}}</th></tr>",
-//                                           companies,
-//                                           [](const Company &c) {
-//                                               return mstch::map{{"id",      to_string(c.id)},
-//                                                                 {"name",    c.name},
-//                                                                 {"address", c.address}};
-//                                           });
+    string page = processTemplate<Drone>("company",
+                                         "drones",
+                                         "singleDrone",
+                                         "companyDroneItem",
+                                         result.drones,
+                                         [](const Drone &d) {
+                                             return mstch::map{{"companyId",       to_string(d.companyId)},
+                                                               {"companyName",     d.companyName},
+                                                               {"droneId",         d.droneId},
+                                                               {"model",           d.model},
+                                                               {"firmwareVersion", d.firmwareVersion}};
+                                         }, context);
 
-//    response.send() << page;
+    response.send() << page;
 }
