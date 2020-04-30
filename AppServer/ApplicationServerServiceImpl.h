@@ -29,6 +29,14 @@ public:
                                  const databaseapp::EmptyRequest *request,
                                  grpc::ServerWriter<databaseapp::CompanyResponse> *writer) override;
 
+    grpc::Status getCompany(grpc::ServerContext *context,
+                            const databaseapp::CompanyRequest *request,
+                            databaseapp::CompanyResponse *writer) override;
+
+    grpc::Status getDrones(grpc::ServerContext *context,
+                           const databaseapp::CompanyRequest *request,
+                           grpc::ServerWriter<databaseapp::DroneResponse> *writer) override;
+
 private:
     CassDriverAdapter &driver;
 };

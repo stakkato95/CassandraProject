@@ -7,7 +7,7 @@ service ApplicationServer {
 
     rpc getAllCompanies (EmptyRequest) returns (stream CompanyResponse) {}
 
-    rpc getCompany (CompanyRequest) returns (stream CompanyResponse) {}
+    rpc getCompany (CompanyRequest) returns (CompanyResponse) {}
 
     rpc getDrones (CompanyRequest) returns (stream DroneResponse) {}
 }
