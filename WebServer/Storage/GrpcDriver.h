@@ -5,9 +5,9 @@
 #ifndef WEBSERVER_GRPCDRIVER_H
 #define WEBSERVER_GRPCDRIVER_H
 
-#include "../Mapping/Mapper.h"
-#include "../Mapping/CompanyMapper.h"
-#include "../Mapping/DroneMapper.h"
+#include "../../Model/Mapping/Mapper.h"
+#include "../../Model/Mapping/CompanyMapper.h"
+#include "../../Model/Mapping/DroneMapper.h"
 
 #include "../../Model/Company.h"
 #include "../../Model/Drone.h"

@@ -8,8 +8,8 @@
 #include "../../Model/Company.h"
 #include "../../Model/Drone.h"
 
-#include "Mapping/CompanyMapper.h"
-#include "Mapping/DroneMapper.h"
+#include "../Model/Mapping/CompanyMapper.h"
+#include "../Model/Mapping/DroneMapper.h"
 
 #include "Webserver.h"
 

@@ -151,9 +151,9 @@ add_executable(WebServer WebServerMain.cpp
         ${hw_grpc_srcs}
         Storage/GrpcDriver.cpp Storage/GrpcDriver.h
         ../Model/Company.h ../Model/Sensor.h
-        Mapping/Mapper.h
-        Mapping/CompanyMapper.cpp Mapping/CompanyMapper.h
-        Mapping/DroneMapper.cpp Mapping/DroneMapper.h
+        ../Model/Mapping/Mapper.h
+        ../Model/Mapping/CompanyMapper.h ../Model/Mapping/CompanyMapper.cpp
+        ../Model/Mapping/DroneMapper.h ../Model/Mapping/DroneMapper.cpp
         Webserver.cpp Webserver.h
         Helper.h
         Storage/Storage.cpp Storage/Storage.h

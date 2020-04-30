@@ -25,6 +25,8 @@ public:
 
     CompanyResponse getCompanyInfo(int companyId) const;
 
+    bool saveCompany(const Company& company);
+
 private:
     const GrpcDriver& driver;
 };

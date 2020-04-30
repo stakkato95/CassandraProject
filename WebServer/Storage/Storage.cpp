@@ -17,3 +17,9 @@ CompanyResponse Storage::getCompanyInfo(int companyId) const {
     vector<Drone> drones = driver.getDrones(companyId);
     return { move(company), move(drones) };
 }
+
+bool Storage::saveCompany(const Company& company) {
+//    driver.
+
+    return true;
+}

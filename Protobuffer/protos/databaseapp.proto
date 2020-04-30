@@ -10,6 +10,8 @@ service ApplicationServer {
     rpc getCompany (CompanyRequest) returns (CompanyResponse) {}
 
     rpc getDrones (CompanyRequest) returns (stream DroneResponse) {}
+
+    rpc saveCompany (SaveCompanyRequest) returns (SaveCompanyResponse) {}
 }
 
 // Empty request message
@@ -35,4 +37,14 @@ message DroneResponse {
     int32 droneid = 3;
     string model = 4;
     string firmwareversion = 5;
+}
+
+message SaveCompanyRequest {
+    int32 id = 1;
+    string name = 2;
+    string address = 3;
+}
+
+message SaveCompanyResponse {
+    bool isSaved = 1;
 }
