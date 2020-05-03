@@ -33,7 +33,7 @@ void CompanyRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServer
                                          "companyDroneItem",
                                          result.drones,
                                          [](const Drone &d) {
-                                             return mstch::map{{"companyId",       to_string(d.companyId)},
+                                             return mstch::map{{"companyId",       d.companyId},
                                                                {"companyName",     d.companyName},
                                                                {"droneId",         d.droneId},
                                                                {"model",           d.model},

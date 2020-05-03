@@ -271,7 +271,12 @@ void CassDriverWrapper::bindParams(CassStatement *statement, const ContentValues
             cass_statement_bind_int32(statement, startIndex, get<int>(val));
         } else if (holds_alternative<float>(val)) {
             cass_statement_bind_float(statement, startIndex, get<float>(val));
+        } else if (holds_alternative<int64_t>(val)) {
+            cass_statement_bind_int64(statement, startIndex, get<int64_t>(val));
+        } else if (holds_alternative<uint32_t>(val)) {
+            cass_statement_bind_uint32(statement, startIndex, get<uint32_t>(val));
         }
+
         startIndex++;
     }
 }
@@ -293,6 +298,14 @@ ContentValues CassDriverWrapper::getRow(const CassRow *row, const ContentMapping
             cass_float_t floatVal = 0;
             cass_value_get_float(cass_row_get_column_by_name(row, name.c_str()), &floatVal);
             resultRow[name] = floatVal;
+        } else if (type == typeid(int64_t)) {
+            cass_int64_t int64Val = 0;
+            cass_value_get_int64(cass_row_get_column_by_name(row, name.c_str()), &int64Val);
+            resultRow[name] = int64Val;
+        } else if (type == typeid(uint32_t)) {
+            cass_uint32_t uint32Val = 0;
+            cass_value_get_uint32(cass_row_get_column_by_name(row, name.c_str()), &uint32Val);
+            resultRow[name] = uint32Val;
         }
     }
 

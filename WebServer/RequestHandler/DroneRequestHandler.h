@@ -1,9 +1,9 @@
 //
-// Created by Artsiom Kaliaha on 4/29/20.
+// Created by Artsiom Kaliaha on 5/3/20.
 //
 
-#ifndef WEBSERVER_WEBREQUESTHANDLERFACTORY_H
-#define WEBSERVER_WEBREQUESTHANDLERFACTORY_H
+#ifndef WEBSERVER_DRONEREQUESTHANDLER_H
+#define WEBSERVER_DRONEREQUESTHANDLER_H
 
 #include "Poco/Net/HTTPServer.h"
 #include "Poco/Net/HTTPRequestHandler.h"
@@ -24,22 +24,19 @@
 #include "Poco/Util/HelpFormatter.h"
 
 #include "../Storage/Storage.h"
+#include "../Helper.h"
 
-#include "CompaniesRequestHandler.h"
-#include "CompanyRequestHandler.h"
-#include "AddCompanyRequestHandler.h"
-#include "DroneRequestHandler.h"
-
-class WebRequestHandlerFactory : public Poco::Net::HTTPRequestHandlerFactory {
+class DroneRequestHandler : public Poco::Net::HTTPRequestHandler {
 public:
-    explicit WebRequestHandlerFactory(const Storage &s);
+    explicit DroneRequestHandler(const Storage &s, int companyId, int droneId);
 
-public:
-    Poco::Net::HTTPRequestHandler *createRequestHandler(const Poco::Net::HTTPServerRequest &request);
+    void handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response);
 
 private:
     const Storage &storage;
+    int companyId;
+    int droneId;
 };
 
 
-#endif //WEBSERVER_WEBREQUESTHANDLERFACTORY_H
+#endif //WEBSERVER_DRONEREQUESTHANDLER_H

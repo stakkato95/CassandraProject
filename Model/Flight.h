@@ -14,7 +14,7 @@ struct Flight {
     float latitude;
     float longitude;
     float elevation;
-    int yearMonthDay;
+    uint32_t yearMonthDay;
     int64_t hourMinuteSecond;
 };
 

@@ -11,7 +11,9 @@
 
 #include <mstch/mstch.hpp>
 
-//using namespace std;
+#define NUM_SECONDS_PER_DAY (24U * 60U * 60U)
+#define CASS_DATE_EPOCH 2147483648U // 2^31
+#define CASS_TIME_NANOSECONDS_PER_SECOND 1000000000LL
 
 static std::string readHtmlFile(const std::string &fileName) {
     std::ifstream file("../html/" + fileName + ".html");
@@ -40,6 +42,12 @@ static std::string processTemplate(const std::string &fileName,
 
     std::string itemViewHtml = readHtmlFile(itemViewFileName);
     return mstch::render(html, context, {{singleItem, itemViewHtml}});
+}
+
+static std::string cassandraTimeToString(uint32_t date, int64_t time) {
+    time_t t = (static_cast<uint64_t>(date) - CASS_DATE_EPOCH) * NUM_SECONDS_PER_DAY +
+               time / CASS_TIME_NANOSECONDS_PER_SECOND;
+    return asctime(gmtime(&t));
 }
 
 #endif //WEBSERVER_HELPER_CPP

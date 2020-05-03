@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Company</title>
+    <title>Drone</title>
 
     <!--Bootstrap-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,20 +18,22 @@
 </head>
 <body>
 
-<p>{{id}} {{name}} {{address}}</p>
+<!--<p>{{id}} {{name}} {{address}}</p>-->
 
 <table class="table">
     <thead class="thead-dark">
     <tr>
         <th scope="col">Company id</th>
-        <th scope="col">Company name</th>
         <th scope="col">Drone id</th>
-        <th scope="col">Model</th>
-        <th scope="col">Firmware version</th>
+        <th scope="col">Flight id</th>
+        <th scope="col">Start latitude</th>
+        <th scope="col">Start longitude</th>
+        <th scope="col">Start Elevation</th>
+        <th scope="col">Start time</th>
     </tr>
     </thead>
     <tbody>
-    {{#drones}} {{> singleDrone}} {{/drones}}
+    {{#flights}} {{> singleFlight}} {{/flights}}
     </tbody>
 </table>
 

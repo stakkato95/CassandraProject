@@ -14,7 +14,7 @@ Flight FlightAdapter::getModel(const ContentValues &value) {
             get<float>(value.at("latitude")),
             get<float>(value.at("longitude")),
             get<float>(value.at("elevation")),
-            get<int>(value.at("yearmonthday")),
+            get<uint32_t>(value.at("yearmonthday")),
             get<int64_t>(value.at("hourminutesecond"))
     };
 }
@@ -40,7 +40,7 @@ ContentMappings FlightAdapter::getAttrs() {
             {"latitude",         type_index(typeid(float))},
             {"longitude",        type_index(typeid(float))},
             {"elevation",        type_index(typeid(float))},
-            {"yearmonthday",     type_index(typeid(int))},
+            {"yearmonthday",     type_index(typeid(uint32_t))},
             {"hourminutesecond", type_index(typeid(int64_t))}
     };
 }

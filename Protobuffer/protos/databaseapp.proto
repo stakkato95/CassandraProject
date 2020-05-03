@@ -63,6 +63,6 @@ message FlightResponse {
     float latitude = 4;
     float longitude = 5;
     float elevation = 6;
-    int32 yearmonthday = 7;
+    uint32 yearmonthday = 7;
     int64 hourminutesecond = 8;
 }

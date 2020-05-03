@@ -161,7 +161,8 @@ add_executable(WebServer WebServerMain.cpp
         RequestHandler/WebRequestHandlerFactory.cpp RequestHandler/WebRequestHandlerFactory.h
         RequestHandler/CompaniesRequestHandler.cpp RequestHandler/CompaniesRequestHandler.h
         RequestHandler/CompanyRequestHandler.cpp RequestHandler/CompanyRequestHandler.h
-        RequestHandler/AddCompanyRequestHandler.cpp RequestHandler/AddCompanyRequestHandler.h)
+        RequestHandler/AddCompanyRequestHandler.cpp RequestHandler/AddCompanyRequestHandler.h
+        RequestHandler/DroneRequestHandler.cpp RequestHandler/DroneRequestHandler.h)
 target_link_libraries(WebServer
         ${_REFLECTION}
         ${_GRPC_GRPCPP}
