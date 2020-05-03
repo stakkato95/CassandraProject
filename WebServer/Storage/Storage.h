@@ -11,6 +11,7 @@
 
 #include "../../Model/Company.h"
 #include "../../Model/Drone.h"
+#include "../../Model/Flight.h"
 
 struct CompanyResponse {
     Company company;
@@ -26,6 +27,8 @@ public:
     CompanyResponse getCompanyInfo(int companyId) const;
 
     bool saveCompany(const Company& company) const;
+
+    std::vector<Flight> getFlights(int companyId, int droneId) const;
 
 private:
     const GrpcDriver& driver;

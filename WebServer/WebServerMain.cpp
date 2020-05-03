@@ -21,6 +21,7 @@ int main(int argc, char **argv) {
     GrpcDriver driver(grpc::CreateChannel("localhost:50051", grpc::InsecureChannelCredentials()));
     driver.registerMapper<Company, CompanyMapper>();
     driver.registerMapper<Drone, DroneMapper>();
+    driver.registerMapper<Flight, FlightMapper>();
     Storage storage(driver);
 
     WebServer app(storage);

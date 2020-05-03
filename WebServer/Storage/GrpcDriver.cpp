@@ -17,6 +17,8 @@ using databaseapp::CompanyMessage;
 using databaseapp::DroneResponse;
 using databaseapp::ApplicationServer;
 using databaseapp::SaveCompanyResponse;
+using databaseapp::FlightRequest;
+using databaseapp::FlightResponse;
 
 GrpcDriver::GrpcDriver(shared_ptr<Channel> channel) : stub(ApplicationServer::NewStub(channel)) {}
 
@@ -99,6 +101,29 @@ bool GrpcDriver::saveCompany(const Company& company) const {
     }
 
     return false;
+}
+
+vector<Flight> GrpcDriver::getFlights(int companyId, int droneId) const {
+    FlightRequest req;
+    req.set_companyid(companyId);
+    req.set_droneid(droneId);
+
+    ClientContext context;
+    unique_ptr<ClientReader<FlightResponse>> reader(stub->getFlights(&context, req));
+
+    const FlightMapper *mapper = static_cast<FlightMapper *>(mappers.at(typeid(Flight)));
+    vector<Flight> result;
+    FlightResponse res;
+    while (reader->Read(&res)) {
+        result.push_back(mapper->getModel(res));
+    }
+
+    Status status = reader->Finish();
+    if (status.ok()) {
+        return result;
+    }
+
+    return {};
 }
 
 ////////////////////////

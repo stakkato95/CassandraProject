@@ -15,9 +15,13 @@ vector<Company> Storage::getAllCompanies() const {
 CompanyResponse Storage::getCompanyInfo(int companyId) const {
     Company company = driver.getCompanyById(companyId);
     vector<Drone> drones = driver.getDrones(companyId);
-    return { move(company), move(drones) };
+    return {move(company), move(drones)};
 }
 
-bool Storage::saveCompany(const Company& company) const {
+bool Storage::saveCompany(const Company &company) const {
     return driver.saveCompany(company);
+}
+
+vector<Flight> Storage::getFlights(int companyId, int droneId) const {
+    return driver.getFlights(companyId, droneId);
 }
