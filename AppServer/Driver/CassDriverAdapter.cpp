@@ -47,12 +47,12 @@ variant<DriverError, vector<TModel>> CassDriverAdapter::select(const ContentValu
     }
 }
 
-template<typename TModel>
+template<typename TModel, typename TAdapter>
 optional<DriverError> CassDriverAdapter::insert(const TModel &model) {
     const type_info &modelType = typeid(TModel);
-    Adapter<TModel> adapter = adapters[modelType];
+    TAdapter* adapter = static_cast<TAdapter*>(adapters[typeid(TModel)]);
     string &table = tables[modelType];
-    ContentValues cv = adapter.getContentValues(model);
+    ContentValues cv = adapter->getContentValues(model);
     return driver.insert(table, cv);
 }
 
@@ -88,3 +88,6 @@ CassDriverAdapter::select<Drone, DroneAdapter>(const ContentValues &where);
 
 template variant<DriverError, vector<Flight>>
 CassDriverAdapter::select<Flight, FlightAdapter>(const ContentValues &where);
+
+template
+optional<DriverError> CassDriverAdapter::insert<Company, CompanyAdapter>(const Company &model);

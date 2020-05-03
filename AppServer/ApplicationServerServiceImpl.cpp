@@ -111,8 +111,13 @@ Status ApplicationServerServiceImpl::saveCompany(ServerContext *context,
     CompanyMapper *mapper = static_cast<CompanyMapper *>(mappers[typeid(Company)]);
     Company company = mapper->getModel(*request);
 
-    response->set_issaved(true);
-    
+    optional<DriverError> error = driver.insert<Company, CompanyAdapter>(company);
+    if (error) {
+        cout << error->error << " " << error->message << endl;
+    }
+
+    response->set_issaved(error.has_value());
+
     return Status::OK;
 }
 

@@ -28,7 +28,7 @@ public:
     template<typename TModel, typename TAdapter>
     std::variant<DriverError, std::vector<TModel>> select(const ContentValues &where);
 
-    template<typename TModel>
+    template<typename TModel, typename TAdapter>
     std::optional<DriverError> insert(const TModel &model);
 
     template<typename TModel>
