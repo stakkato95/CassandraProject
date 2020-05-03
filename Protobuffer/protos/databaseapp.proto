@@ -12,6 +12,8 @@ service ApplicationServer {
     rpc getDrones (CompanyRequest) returns (stream DroneResponse) {}
 
     rpc saveCompany (CompanyMessage) returns (SaveCompanyResponse) {}
+
+    rpc getFlights (FlightRequest) returns (stream FlightResponse) {}
 }
 
 // Empty request message
@@ -47,4 +49,20 @@ message SaveCompanyRequest {
 
 message SaveCompanyResponse {
     bool isSaved = 1;
+}
+
+message FlightRequest {
+    int32 companyid = 1;
+    int32 droneid = 2;
+}
+
+message FlightResponse {
+    int32 companyid = 1;
+    int32 droneid = 2;
+    int32 flightid = 3;
+    float latitude = 4;
+    float longitude = 5;
+    float elevation = 6;
+    int32 yearmonthday = 7;
+    int64 hourminutesecond = 8;
 }

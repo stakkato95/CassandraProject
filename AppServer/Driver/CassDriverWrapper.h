@@ -16,8 +16,9 @@
 #include <optional>
 #include <variant>
 #include <typeindex>
+#include <cstdint>
 
-using object = std::variant<std::string, float, int>;
+using object = std::variant<std::string, float, int, int64_t>;
 using ContentValues = std::unordered_map<std::string, object>;
 using ContentMappings = std::unordered_map<std::string, std::type_index>;
 using ResultCollection = std::vector<ContentValues>;

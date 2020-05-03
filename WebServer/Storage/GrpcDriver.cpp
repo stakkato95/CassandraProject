@@ -107,3 +107,4 @@ bool GrpcDriver::saveCompany(const Company& company) const {
 
 template void GrpcDriver::registerMapper<Company, CompanyMapper>();
 template void GrpcDriver::registerMapper<Drone, DroneMapper>();
+template void GrpcDriver::registerMapper<Flight, FlightMapper>();

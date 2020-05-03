@@ -7,9 +7,11 @@
 
 #include "../../Model/Company.h"
 #include "../../Model/Drone.h"
+#include "../../Model/Flight.h"
 
 #include "../Model/Mapping/CompanyMapper.h"
 #include "../Model/Mapping/DroneMapper.h"
+#include "../Model/Mapping/FlightMapper.h"
 
 #include "Webserver.h"
 

@@ -7,11 +7,14 @@
 #include "../../Model/User.h"
 #include "../../Model/Sensor.h"
 #include "../../Model/Company.h"
+#include "../../Model/Drone.h"
+#include "../../Model/Flight.h"
 
 #include "../Adapter/UserAdapter.h"
 #include "../Adapter/SensorAdapter.h"
 #include "../Adapter/CompanyAdapter.h"
 #include "../Adapter/DroneAdapter.h"
+#include "../Adapter/FlightAdapter.h"
 
 using namespace std;
 
@@ -82,3 +85,6 @@ CassDriverAdapter::select<Company, CompanyAdapter>(const ContentValues &where);
 
 template variant<DriverError, vector<Drone>>
 CassDriverAdapter::select<Drone, DroneAdapter>(const ContentValues &where);
+
+template variant<DriverError, vector<Flight>>
+CassDriverAdapter::select<Flight, FlightAdapter>(const ContentValues &where);

@@ -19,6 +19,8 @@ using databaseapp::CompanyRequest;
 using databaseapp::DroneResponse;
 using databaseapp::SaveCompanyRequest;
 using databaseapp::SaveCompanyResponse;
+using databaseapp::FlightRequest;
+using databaseapp::FlightResponse;
 
 ApplicationServerServiceImpl::ApplicationServerServiceImpl(CassDriverAdapter &d) : driver{d} {}
 
@@ -113,9 +115,52 @@ Status ApplicationServerServiceImpl::saveCompany(ServerContext *context,
     return Status::OK;
 }
 
+Status ApplicationServerServiceImpl::getFlights(ServerContext *context,
+                                                const FlightRequest *request,
+                                                ServerWriter<FlightResponse> *writer) {
+    ContentValues where = {{"companyid", request->companyid()},
+                           {"droneid",   request->droneid()}};
+    if (auto result = driver.select<Flight, FlightAdapter>(where); holds_alternative<vector<Flight>>(result)) {
+        //immediately invoked lambda
+        const vector<Flight> f = [&result] {
+            vector<Flight> flights = get<vector<Flight>>(result);
+            auto last = unique(begin(flights), end(flights), [](const Flight &a, const Flight &b) {
+                return a.companyId == b.companyId && a.droneId == b.droneId && a.flightId == b.flightId;
+            });
+            flights.erase(last, end(flights));
+
+            return flights;
+        }();
+
+        FlightResponse response;
+        for (const Flight &flight : f) {
+            response.set_companyid(flight.companyId);
+            response.set_droneid(flight.droneId);
+            response.set_flightid(flight.flightId);
+            response.set_latitude(flight.latitude);
+            response.set_longitude(flight.longitude);
+            response.set_elevation(flight.elevation);
+            response.set_yearmonthday(flight.yearMonthDay);
+            response.set_hourminutesecond(flight.hourMinuteSecond);
+
+            if (!writer->Write(response)) {
+                break;
+            }
+        }
+
+        return Status::OK;
+    } else {
+        DriverError &error = get<DriverError>(result);
+        cout << error.error << " " << error.message << endl;
+    }
+
+    return Status::CANCELLED;
+}
+
 ////////////////////////
 //templates implementation given we know all the classes that will use our class
 ////////////////////////
 
 template void ApplicationServerServiceImpl::registerMapper<Company, CompanyMapper>();
+
 template void ApplicationServerServiceImpl::registerMapper<Drone, DroneMapper>();

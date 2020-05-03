@@ -145,6 +145,7 @@ add_executable(AppServer
         ../Model/User.h Adapter/UserAdapter.cpp Adapter/UserAdapter.h
         ../Model/Company.h Adapter/CompanyAdapter.cpp Adapter/CompanyAdapter.h
         ../Model/Drone.h Adapter/DroneAdapter.cpp Adapter/DroneAdapter.h
+        ../Model/Flight.h Adapter/FlightAdapter.cpp Adapter/FlightAdapter.h
         ../Model/Mapping/CompanyMapper.h ../Model/Mapping/CompanyMapper.cpp
         ../Model/Mapping/DroneMapper.h ../Model/Mapping/DroneMapper.cpp)
 target_link_libraries(AppServer

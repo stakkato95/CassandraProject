@@ -154,6 +154,7 @@ add_executable(WebServer WebServerMain.cpp
         ../Model/Mapping/Mapper.h
         ../Model/Mapping/CompanyMapper.h ../Model/Mapping/CompanyMapper.cpp
         ../Model/Mapping/DroneMapper.h ../Model/Mapping/DroneMapper.cpp
+        ../Model/Mapping/FlightMapper.h ../Model/Mapping/FlightMapper.cpp
         Webserver.cpp Webserver.h
         Helper.h
         Storage/Storage.cpp Storage/Storage.h

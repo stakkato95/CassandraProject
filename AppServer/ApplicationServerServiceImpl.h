@@ -9,6 +9,7 @@
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <algorithm>
 
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
@@ -21,6 +22,7 @@
 #include "Adapter/UserAdapter.h"
 #include "Adapter/CompanyAdapter.h"
 #include "Adapter/DroneAdapter.h"
+#include "Adapter/FlightAdapter.h"
 
 #include "../Model/Mapping/Mapper.h"
 #include "../Model/Mapping/CompanyMapper.h"
@@ -28,6 +30,7 @@
 
 #include "../Model/Company.h"
 #include "../Model/Drone.h"
+#include "../Model/Flight.h"
 
 class ApplicationServerServiceImpl final : public databaseapp::ApplicationServer::Service {
 public:
@@ -51,6 +54,10 @@ public:
     grpc::Status saveCompany(grpc::ServerContext *context,
                              const databaseapp::CompanyMessage *request,
                              databaseapp::SaveCompanyResponse *response) override;
+
+    grpc::Status getFlights(grpc::ServerContext *context,
+                            const databaseapp::FlightRequest *request,
+                            grpc::ServerWriter<databaseapp::FlightResponse> *writer) override;
 
 private:
     CassDriverAdapter &driver;

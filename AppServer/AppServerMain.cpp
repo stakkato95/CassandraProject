@@ -6,6 +6,7 @@
 
 #include "../Model/Company.h"
 #include "../Model/Drone.h"
+#include "../Model/Flight.h"
 
 #include "../Model/Mapping/CompanyMapper.h"
 #include "../Model/Mapping/DroneMapper.h"
@@ -19,8 +20,9 @@ using grpc::ServerBuilder;
 
 void RunServer() {
     CassDriverAdapter driver(CassDriverWrapper("127.0.0.1", "autonomousflight"));
-    driver.registerAdapter<Drone, DroneAdapter>("drone");
     driver.registerAdapter<Company, CompanyAdapter>("company");
+    driver.registerAdapter<Drone, DroneAdapter>("drone");
+    driver.registerAdapter<Flight, FlightAdapter>("flight");
 
 //    variant<DriverError, vector<Drone>> result = driver.select<Drone, DroneAdapter>({});
 //    vector<Drone> drones = get<vector<Drone>>(result);
