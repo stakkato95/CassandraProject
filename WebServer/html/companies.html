@@ -18,20 +18,31 @@
 </head>
 <body>
 
-<a class="btn btn-primary" href="addCompany.html" role="button">Link</a>
+<div class="container">
 
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th scope="col">id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Address</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#companies}} {{> singleCompany}} {{/companies}}
-    </tbody>
-</table>
+    <div class="card border-primary mb-3 mx-4 my-4">
+        <div class="card-header">New offer</div>
+        <div class="card-body text-primary">
+            <h5 class="card-title">Create a new company today</h5>
+            <p class="card-text">Create a new company for free only today with our service!</p>
+            <a class="btn btn-primary" href="addCompany.html" role="button">Create free company</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#companies}} {{> singleCompany}} {{/companies}}
+        </tbody>
+    </table>
+
+</div>
 
 <!--Bootstrap-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

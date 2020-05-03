@@ -21,7 +21,7 @@ void DroneRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
 
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
-    
+
     mstch::map context{
             {"companyId",       result.drone.companyId},
             {"companyName",     result.drone.companyName},

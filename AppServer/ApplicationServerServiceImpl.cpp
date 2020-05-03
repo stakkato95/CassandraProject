@@ -112,7 +112,7 @@ Status ApplicationServerServiceImpl::saveCompany(ServerContext *context,
     Company company = mapper->getModel(*request);
 
     response->set_issaved(true);
-
+    
     return Status::OK;
 }
 

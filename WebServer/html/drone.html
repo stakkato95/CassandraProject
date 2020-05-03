@@ -17,25 +17,39 @@
 
 </head>
 <body>
+<div class="container">
 
-<p>{{companyId}} {{companyName}} {{droneId}} {{model}} {{firmwareVersion}}</p>
+    <div class="card my-4 mx-4">
+        <div class="card-header">
+            Company id: {{companyId}}, company name: {{companyName}}
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Drone information</h5>
+            <p class="card-text">Id: {{droneId}}</p>
+            <p class="card-text">Model: {{model}}</p>
+            <p class="card-text">Firmware version: {{firmwareVersion}}</p>
+            <a href="/company/{{companyId}}" class="btn btn-primary">Back to company</a>
+        </div>
+    </div>
 
-<table class="table">
-    <thead class="thead-dark">
-    <tr>
-        <th scope="col">Company id</th>
-        <th scope="col">Drone id</th>
-        <th scope="col">Flight id</th>
-        <th scope="col">Start latitude</th>
-        <th scope="col">Start longitude</th>
-        <th scope="col">Start Elevation</th>
-        <th scope="col">Start time</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#flights}} {{> singleFlight}} {{/flights}}
-    </tbody>
-</table>
+    <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Company id</th>
+            <th scope="col">Drone id</th>
+            <th scope="col">Flight id</th>
+            <th scope="col">Start latitude</th>
+            <th scope="col">Start longitude</th>
+            <th scope="col">Start Elevation</th>
+            <th scope="col">Start time</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#flights}} {{> singleFlight}} {{/flights}}
+        </tbody>
+    </table>
+
+</div>
 
 <!--Bootstrap-->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
