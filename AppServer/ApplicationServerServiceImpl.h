@@ -59,6 +59,10 @@ public:
                             const databaseapp::FlightRequest *request,
                             grpc::ServerWriter<databaseapp::FlightResponse> *writer) override;
 
+    grpc::Status getDrone(grpc::ServerContext *context,
+                          const databaseapp::DroneRequest *request,
+                          databaseapp::DroneResponse *response) override;
+
 private:
     CassDriverAdapter &driver;
     std::unordered_map<std::type_index, IMapper *> mappers;

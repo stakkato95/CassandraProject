@@ -21,6 +21,7 @@ using databaseapp::SaveCompanyRequest;
 using databaseapp::SaveCompanyResponse;
 using databaseapp::FlightRequest;
 using databaseapp::FlightResponse;
+using databaseapp::DroneRequest;
 
 ApplicationServerServiceImpl::ApplicationServerServiceImpl(CassDriverAdapter &d) : driver{d} {}
 
@@ -147,6 +148,36 @@ Status ApplicationServerServiceImpl::getFlights(ServerContext *context,
                 break;
             }
         }
+
+        return Status::OK;
+    } else {
+        DriverError &error = get<DriverError>(result);
+        cout << error.error << " " << error.message << endl;
+    }
+
+    return Status::CANCELLED;
+}
+
+Status ApplicationServerServiceImpl::getDrone(ServerContext *context,
+                                              const DroneRequest *request,
+                                              DroneResponse *response) {
+    ContentValues where = {
+            {"companyid", request->companyid()},
+            {"droneid",   request->droneid()}
+    };
+    if (auto result = driver.select<Drone, DroneAdapter>(where);
+            holds_alternative<vector<Drone>>(result)) {
+        vector<Drone> drones = get<vector<Drone>>(result);
+        if (drones.empty()) {
+            cout << "company not found in getCompany()" << endl;
+            return Status::CANCELLED;
+        }
+
+        response->set_companyid(drones[0].companyId);
+        response->set_companyname(drones[0].companyName);
+        response->set_droneid(drones[0].droneId);
+        response->set_model(drones[0].model);
+        response->set_firmwareversion(drones[0].firmwareVersion);
 
         return Status::OK;
     } else {

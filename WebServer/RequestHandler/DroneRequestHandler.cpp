@@ -17,22 +17,24 @@ void DroneRequestHandler::handleRequest(HTTPServerRequest &request, HTTPServerRe
     Application &app = Application::instance();
     app.logger().information("Request from " + request.clientAddress().toString());
 
-    vector<Flight> flights = storage.getFlights(companyId, droneId);
+    DroneResponse result = storage.getDroneInfo(companyId, droneId);
 
     response.setChunkedTransferEncoding(true);
     response.setContentType("text/html");
-
+    
     mstch::map context{
-//            {"id",      result.company.id},
-//            {"name",    result.company.name},
-//            {"address", result.company.address}
+            {"companyId",       result.drone.companyId},
+            {"companyName",     result.drone.companyName},
+            {"droneId",         result.drone.droneId},
+            {"model",           result.drone.model},
+            {"firmwareVersion", result.drone.firmwareVersion}
     };
 
     string page = processTemplate<Flight>("drone",
                                           "flights",
                                           "singleFlight",
                                           "droneFlightItem",
-                                          flights,
+                                          result.flights,
                                           [](const Flight &f) {
                                               string time = cassandraTimeToString(f.yearMonthDay, f.hourMinuteSecond);
                                               return mstch::map{{"companyId", f.companyId},

@@ -18,6 +18,11 @@ struct CompanyResponse {
     std::vector<Drone> drones;
 };
 
+struct DroneResponse {
+    Drone drone;
+    std::vector<Flight> flights;
+};
+
 class Storage {
 public:
     explicit Storage(const GrpcDriver &d);
@@ -27,6 +32,8 @@ public:
     CompanyResponse getCompanyInfo(int companyId) const;
 
     bool saveCompany(const Company& company) const;
+
+    DroneResponse getDroneInfo(int companyId, int droneId) const;
 
     std::vector<Flight> getFlights(int companyId, int droneId) const;
 

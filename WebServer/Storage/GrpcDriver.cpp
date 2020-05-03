@@ -19,6 +19,7 @@ using databaseapp::ApplicationServer;
 using databaseapp::SaveCompanyResponse;
 using databaseapp::FlightRequest;
 using databaseapp::FlightResponse;
+using databaseapp::DroneRequest;
 
 GrpcDriver::GrpcDriver(shared_ptr<Channel> channel) : stub(ApplicationServer::NewStub(channel)) {}
 
@@ -86,7 +87,7 @@ vector<Drone> GrpcDriver::getDrones(int companyId) const {
     return {};
 }
 
-bool GrpcDriver::saveCompany(const Company& company) const {
+bool GrpcDriver::saveCompany(const Company &company) const {
     CompanyMessage req;
     req.set_id(company.id);
     req.set_name(company.name);
@@ -126,10 +127,29 @@ vector<Flight> GrpcDriver::getFlights(int companyId, int droneId) const {
     return {};
 }
 
+Drone GrpcDriver::getDrone(int companyId, int droneId) const {
+    DroneRequest req;
+    req.set_companyid(companyId);
+    req.set_droneid(droneId);
+
+    DroneResponse res;
+    ClientContext context;
+    Status status = stub->getDrone(&context, req, &res);
+
+    if (status.ok()) {
+        const DroneMapper *mapper = static_cast<DroneMapper *>(mappers.at(typeid(Drone)));
+        return mapper->getModel(res);
+    }
+
+    return {};
+}
+
 ////////////////////////
 //templates implementation given we know all the classes that will use our class
 ////////////////////////
 
 template void GrpcDriver::registerMapper<Company, CompanyMapper>();
+
 template void GrpcDriver::registerMapper<Drone, DroneMapper>();
+
 template void GrpcDriver::registerMapper<Flight, FlightMapper>();
